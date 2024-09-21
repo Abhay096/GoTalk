@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
+//********************Defining user schema ********************
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -29,7 +32,37 @@ const userSchema = new mongoose.Schema({
                 value: { type: String, } // This is for name
             }
         ],
+    },
+    token: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
+
+
+//*************************password encrypting*********************
+//pre is mongodb db hook which tells before saving do this and don't use arrow function because that will not take this reference
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password"))
+        return next();
+    this.password = bcrypt.hash(this.password, 10)
+});
+
+userSchema.methods.isPasswordCorrect() = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
+
+
+//*************************Generate session token*********************
+userSchema.methods.generateToken = async function () {
+    try {
+        let token = jwt.sign({ _id: this._id, email: this.phone_no }, process.env.JWT_SECRET);
+        this.token = token;
+        await this.save();
+        return token;
+    } catch (error) {
+        console.log("jwt error:", error);
+    }
+}
 
 export const user = mongoose.model("User", userSchema);
