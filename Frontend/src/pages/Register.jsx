@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import logo from '../assets/logo.png';
 import './Register.css';
+import axios from 'axios';
+
 
 function Register() {
 
-    const [cred, setCred] = useState({ name: "", email: "", password: "", phone: "" });
+    const [cred, setCred] = useState({ name: "", email: "", password: "", phone_no: "" });
     const onChange = (e) => {
         setCred({ ...cred, [e.target.name]: e.target.value })
     }
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        try {
+            axios.post(`http://localhost:3000/api/register`, {
+                name: cred.name,
+                email: cred.email,
+                password: cred.password,
+                phone_no: cred.phone_no
+            }).then(function (response) {
+                console.log(response);
+                alert(response.data.message)
+            }).catch(function (error) {
+                console.log('Server Error while registering', error);
+            })
+        } catch (error) {
+            console.log('Error while registering', error);
+        }
     }
     return (
         <>
@@ -27,24 +45,24 @@ function Register() {
                     <form onSubmit={handleRegister} class="ui form Register_form">
                         <div class="field">
                             <label>Name</label>
-                            <input name='name' type='text' placeholder="Name" onChange={onChange} />
+                            <input required name='name' type='text' placeholder="Name" onChange={onChange} />
                         </div>
                         <div class="field">
                             <label>Email</label>
-                            <input name='email' type='text' placeholder="Email" onChange={onChange} />
+                            <input required name='email' type='text' placeholder="Email" onChange={onChange} />
                         </div>
                         <div class="field">
                             <label>Phone Number</label>
-                            <input name='phone' type='text' placeholder="Phone No" onChange={onChange} />
+                            <input required name='phone_no' type='text' placeholder="Phone No" onChange={onChange} />
                         </div>
                         <div class="field">
                             <label>Password</label>
-                            <input name='password' type='password' placeholder="Password" onChange={onChange} />
+                            <input required name='password' type='password' placeholder="Password" onChange={onChange} />
 
                         </div>
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" class="hidden" readonly="" tabindex="0" />
+                                <input required type="checkbox" readonly="" tabindex="0" />
                                 <label>I agree to the Terms and Conditions</label>
                             </div>
                         </div>
