@@ -56,6 +56,14 @@
     color: red;
 }
 
+.login_loader {
+    display: none;
+}
+
+.login_loader1 {
+    display: block;
+}
+
 
 @media (min-width: 425px) and (max-width: 768px) {
     .Register_form {

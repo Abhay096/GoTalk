@@ -3,8 +3,11 @@ import logo from '../assets/logo.png';
 import './Register.css';
 import axios from 'axios';
 import validator from 'validator';
+import Loader from '../component/loader/Loader';
 
 function Register() {
+
+    const [displayLoader, setDisplayLoader] = useState(false)
 
     const [emailError, setEmailError] = useState("")
     const [passwordError, setPasswordError] = useState("")
@@ -57,24 +60,28 @@ function Register() {
             return; // Prevent submission if there are errors
         }
 
+        setDisplayLoader(true)
         try {
-            axios.post(`http://localhost:3000/api/register`, {
+            const response = await axios.post(`http://localhost:3000/api/register`, {
                 name: cred.name,
                 email: cred.email,
                 password: cred.password,
                 phone_no: cred.phone_no
-            }).then(function (response) {
-                console.log(response);
-                alert(response.data.message)
-            }).catch(function (error) {
-                console.log('Server Error while registering', error);
-            })
+            });
+            console.log(response);
+            alert(response.data.message);
         } catch (error) {
             console.log('Error while registering', error);
+        }
+        finally {
+            setDisplayLoader(false);
         }
     }
     return (
         <>
+            <div className={`login_loader ${displayLoader ? 'login_loader1' : ''}`}>
+                <Loader></Loader>
+            </div>
             <div className="Register_header">
                 <div class="ui huge header Register_logo">
                     <div>
