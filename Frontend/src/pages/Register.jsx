@@ -2,9 +2,45 @@ import React, { useState } from 'react';
 import logo from '../assets/logo.png';
 import './Register.css';
 import axios from 'axios';
-
+import validator from 'validator';
 
 function Register() {
+
+    const [emailError, setEmailError] = useState("")
+    const [passwordError, setPasswordError] = useState("")
+    const [phoneError, setPhoneError] = useState("")
+
+    const checkEmail = (email) => {
+        if (!validator.isEmail(email))
+            setEmailError('Enter a valid email');
+        else
+            setEmailError('');
+    }
+    const checkPassword = (password) => {
+        if (password.length < 8)
+            setPasswordError("Password must be at least 8 characters long.");
+        else if (!/[a-z]/.test(password))
+            setPasswordError("Password must contain at least one lowercase letter.");
+        else if (!/[A-Z]/.test(password))
+            setPasswordError("Password must contain at least one uppercase letter.");
+        else if (!/\d/.test(password))
+            setPasswordError("Password must contain at least one digit.");
+        else if (!/[@$!%*?&]/.test(password))
+            setPasswordError("Password must contain at least one special character.");
+        else
+            setPasswordError("");
+
+    }
+    const checkPhone = (phone) => {
+        if (!validator.isNumeric(phone))
+            setPhoneError("Phone number must contain only numbers.");
+        else if (phone.length > 10)
+            setPhoneError("Phone number must not exceed 10 digits.");
+        else if (phone.length < 10)
+            setPhoneError("Phone number must be exactly 10 digits.");
+        else
+            setPhoneError("");
+    }
 
     const [cred, setCred] = useState({ name: "", email: "", password: "", phone_no: "" });
     const onChange = (e) => {
@@ -12,6 +48,14 @@ function Register() {
     }
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        checkEmail(cred.email);
+        checkPhone(cred.phone_no);
+        checkPassword(cred.password);
+
+        if (emailError !== "" || passwordError !== "" || phoneError !== "") {
+            return; // Prevent submission if there are errors
+        }
 
         try {
             axios.post(`http://localhost:3000/api/register`, {
@@ -50,15 +94,17 @@ function Register() {
                         <div class="field">
                             <label>Email</label>
                             <input required name='email' type='text' placeholder="Email" onChange={onChange} />
+                            <div className='Register_error'>{emailError}</div>
                         </div>
                         <div class="field">
                             <label>Phone Number</label>
                             <input required name='phone_no' type='text' placeholder="Phone No" onChange={onChange} />
+                            <div className='Register_error'>{phoneError}</div>
                         </div>
                         <div class="field">
                             <label>Password</label>
                             <input required name='password' type='password' placeholder="Password" onChange={onChange} />
-
+                            <div className='Register_error'>{passwordError}</div>
                         </div>
                         <div class="field">
                             <div class="ui checkbox">
