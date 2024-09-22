@@ -4,7 +4,9 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-import router from './Routes/register.js';
+import registerRouter from './Routes/register.js';
+import loginRouter from './Routes/login.js';
+
 
 dotenv.config({ path: './env' }) //configuring env file
 dbConnection(); //calling  db connection function
@@ -22,7 +24,8 @@ app.use(express.json({ limit: '16kb' }));  // configuring json middleware
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));  // configuring urlencoded middleware
 app.use(cookieParser());  // configuring cookie parser middleware
 
-app.use('/api', router)  //using registration route middleware
+app.use('/api', registerRouter)  //using registration route middleware
+app.use('/api', loginRouter)  //using login route middleware
 
 
 app.get('/', (req, res) => {
