@@ -27,3 +27,5 @@ router.get('/token_data', async (req, res) => {
         return res.status(403).json({ message: 'Invalid token' });
     }
 });
+
+export default router;

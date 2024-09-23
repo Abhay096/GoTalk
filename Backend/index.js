@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 
 import registerRouter from './Routes/register.js';
 import loginRouter from './Routes/login.js';
+import tokenRouter from './Routes/token_data.js';
+
 
 
 dotenv.config({ path: './env' }) //configuring env file
@@ -16,7 +18,8 @@ const app = express();  //creating express app
 
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN,  //allowing cors from this origin
+    credentials: true // This allows cookies to be sent
 })); // configuring cors middleware
 
 
@@ -26,6 +29,7 @@ app.use(cookieParser());  // configuring cookie parser middleware
 
 app.use('/api', registerRouter)  //using registration route middleware
 app.use('/api', loginRouter)  //using login route middleware
+app.use('/api', tokenRouter)  //using token route middleware
 
 
 app.get('/', (req, res) => {

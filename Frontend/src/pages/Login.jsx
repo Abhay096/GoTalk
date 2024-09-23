@@ -40,6 +40,8 @@ function Login() {
             const response = await axios.post(`http://localhost:3000/api/login`, {
                 password: cred.password,
                 phone_no: cred.phone_no
+            }, {
+                withCredentials: true // This will include cookies in the request
             });
             console.log(response);
             alert(response.data.message);

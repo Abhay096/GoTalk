@@ -38,13 +38,22 @@ function ModalExampleCloseIcon() {
             return; // Prevent submission if there are errors
         }
 
+        // try {
+        //     const response = await fetch(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.phone_no)}&country_code=IN`);
+        //     const data = await response.json()
+        //     console.log(data);
+        //     if(data.valid===false){
+        //         alert("Phone number doesn't exist");
+        //         return ;
+        //     }
+        // } catch (error) {
+        //     console.log('Error while Checking existance of phone number:', error);
+        // }
         try {
-            const response = await fetch(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.phone_no)}&country_code=IN`);
-            const data = await response.json()
-            console.log(data);
+            const response = await axios.get('http://localhost:3000/api/token_data');
+            console.log(response);
         } catch (error) {
-            console.log('Error while Checking existance of phone number:', error);
-
+            console.log('Error while getting token:', error);
         }
 
         setOpen(false);

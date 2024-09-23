@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
 
             res.cookie('token', token, {
                 httpOnly: true, // The cookie will be inaccessible to JavaScript
-                secure: true  // Requires a secure connection (HTTPS)
+                secure: process.env.NODE_ENV === 'production'  // Requires a secure connection (HTTPS) if environment is production 
             }); //Storing token in cookie
 
             return res.json({ message: "User logged in successfully", status: 1, token });   //returning token
