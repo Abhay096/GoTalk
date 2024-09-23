@@ -1,19 +1,19 @@
-.Register_header {
+.login_header {
     display: flex;
     height: 12rem;
     align-items: center;
     text-align: -webkit-center;
 }
 
-.Register_logo {
+.login_logo {
     width: 100%;
 }
 
-.Register_header_content {
+.login_header_content {
     font-size: 0.7em;
 }
 
-.Register_form_outer_div {
+.login_form_outer_div {
     display: flex;
     justify-content: center;
     background-color: white;
@@ -21,70 +21,71 @@
     background-color: #f6f6ff;
 }
 
-.Register_form_inner_div {
+.login_form_inner_div {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
+
 }
 
-.Register_form {
+.login_form {
     width: 35%;
     min-width: 35%;
     background-color: white;
     padding: 2em;
 }
 
-.Register_submit {
+.login_submit {
     color: white !important;
     background-color: #7269ef !important;
 }
 
-.Register_footer {
+.login_footer {
     display: flex;
     height: 3rem;
     align-items: center;
     text-align: -webkit-center;
 }
 
-.Register_footer_span {
+.login_footer_span {
     color: #7269ef;
     cursor: pointer;
 }
 
-.Register_error {
+.login_error {
     color: red;
 }
 
-.register_loader {
+.login_loader {
     display: none;
 }
 
-.register_loader1 {
+.login_loader1 {
     display: block;
 }
 
 
 @media (min-width: 425px) and (max-width: 768px) {
-    .Register_form {
+    .login_form {
         width: 80%;
     }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
-    .Register_form {
+    .login_form {
         width: 50%;
     }
 }
 
 @media (min-width: 320px) and (max-width: 424px) {
-    .Register_form {
+    .login_form {
         width: 80%;
     }
 }
 
 @media (max-width: 319px) {
-    .Register_form {
+    .login_form {
         width: 80%;
     }
 }

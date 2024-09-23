@@ -58,7 +58,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 //*************************Generate session token*********************
 userSchema.methods.generateToken = async function () {
     try {
-        let token = jwt.sign({ _id: this._id, email: this.phone_no }, process.env.JWT_SECRET);
+        let token = jwt.sign({ _id: this._id, phone: this.phone_no }, process.env.JWT_SECRET);
         this.tokens = this.tokens.concat({ token: token });
         await this.save();
         return token;

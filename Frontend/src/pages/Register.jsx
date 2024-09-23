@@ -79,7 +79,7 @@ function Register() {
     }
     return (
         <>
-            <div className={`login_loader ${displayLoader ? 'login_loader1' : ''}`}>
+            <div className={`register_loader ${displayLoader ? 'register_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
             <div className="Register_header">
@@ -88,7 +88,7 @@ function Register() {
                         <img src={logo} class="ui avatar image" />
                     </div>
                     <div className='Register_header_content'>Register</div>
-                    <div className='Register_header_content'>Get your GoTalk account now</div>
+                    <div className='Register_header_content'>Get your GoTalk account now.</div>
                 </div>
             </div>
             <div className="Register_form_outer_div">

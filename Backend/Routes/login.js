@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
         const passwordMatch = await bcrypt.compare(userPassword, userData.password);   //comparing password with hashed password
 
         if (!passwordMatch) {
-            return res.json({ message: "Invalid password", status: 0 });    //if password not match
+            return res.json({ message: "Wrong password", status: 0 });    //if password not match
         }
         else {
             const token = await userData.generateToken();  //generating session token
