@@ -22,12 +22,13 @@ router.post('/login', async (req, res) => {
         else {
             const token = await userData.generateToken();  //generating session token
 
+            //Storing token in cookie
             res.cookie('token', token, {
                 httpOnly: true, // The cookie will be inaccessible to JavaScript
-                secure: process.env.NODE_ENV === 'production'  // Requires a secure connection (HTTPS) if environment is production 
-            }); //Storing token in cookie
+                secure: true  // Requires a secure connection (HTTPS) if environment is production 
+            });
 
-            return res.json({ message: "User logged in successfully", status: 1, token });   //returning token
+            return res.json({ message: "User logged in successfully", status: 200 });   //returning token
         }
     } catch (error) {
         console.log("Internal server Error while login:", error);  //logging error

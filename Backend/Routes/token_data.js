@@ -1,9 +1,11 @@
 import express from 'express';
+import jwt from 'jsonwebtoken'
 
 const router = express.Router();
 
 router.get('/token_data', async (req, res) => {
-    const token = req.cookies.token;
+    console.log(req.cookies);
+    const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
         console.log("Not get the token!!!")
@@ -20,7 +22,6 @@ router.get('/token_data', async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         // Send relevant user information back to the client
         return res.json({ phone: user.phone_no });
     } catch (err) {

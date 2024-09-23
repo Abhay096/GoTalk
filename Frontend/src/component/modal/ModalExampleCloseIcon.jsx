@@ -51,7 +51,7 @@ function ModalExampleCloseIcon() {
         // }
         try {
             const response = await axios.get('http://localhost:3000/api/token_data');
-            console.log(response);
+            console.log(response.json());
         } catch (error) {
             console.log('Error while getting token:', error);
         }

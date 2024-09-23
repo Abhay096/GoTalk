@@ -8,8 +8,6 @@ import registerRouter from './Routes/register.js';
 import loginRouter from './Routes/login.js';
 import tokenRouter from './Routes/token_data.js';
 
-
-
 dotenv.config({ path: './env' }) //configuring env file
 dbConnection(); //calling  db connection function
 
