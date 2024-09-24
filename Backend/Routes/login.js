@@ -2,39 +2,53 @@ import express from 'express';
 import { user } from '../Models/user.js';
 import bcrypt from 'bcrypt';
 
-const router = express.Router(); //creating router variable
+//creating router variable
+const router = express.Router();
+
+//route for user login
 router.post('/login', async (req, res) => {
-    const userPhoneNo = req.body.phone_no;  //getting phone number from request body
-    const userPassword = req.body.password;   //getting password from request body
+
+    // getting the user input
+    const userPhoneNo = req.body.phone_no;
+    const userPassword = req.body.password;
 
     try {
-        const userData = await user.findOne({ phone_no: userPhoneNo });  //finding user by phone number
+        //finding user by phone number
+        const userData = await user.findOne({ phone_no: userPhoneNo });
 
+        //if user not found
         if (!userData) {
-            return res.json({ message: "Account not found", status: 0 });   //if user not found
+            return res.json({ message: "Account not found", status: 0 });
         }
 
-        const passwordMatch = await bcrypt.compare(userPassword, userData.password);   //comparing password with hashed password
+        //comparing password with hashed password
+        const passwordMatch = await bcrypt.compare(userPassword, userData.password);
 
+        //if password not match
         if (!passwordMatch) {
-            return res.json({ message: "Wrong password", status: 0 });    //if password not match
+            return res.json({ message: "Wrong password", status: 0 });
         }
+        // if password match
         else {
-            const token = await userData.generateToken();  //generating session token
+            //generating session token
+            const token = await userData.generateToken();
 
             //Storing token in cookie
             res.cookie('token', token, {
-                httpOnly: true, // The cookie will be inaccessible to JavaScript
+                httpOnly: true, // The cookie will be inaccessible to JavaScript (X-site scripting)
                 secure: true  // Requires a secure connection (HTTPS) if environment is production 
             });
 
-            return res.json({ message: "User logged in successfully", status: 200 });   //returning token
+            // returning response
+            return res.json({ message: "User logged in successfully", status: 200 });
         }
     } catch (error) {
-        console.log("Internal server Error while login:", error);  //logging error
-        return res.status(500).json({ message: "Internal server error", status: 0 }); //returning error
+        //logging error
+        console.log("Internal server Error while login:", error);
+        //returning error
+        return res.status(500).json({ message: "Internal server error", status: 0 });
 
     }
-}); //route for user login
+});
 
 export default router;

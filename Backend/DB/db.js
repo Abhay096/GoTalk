@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// function Connect to the database
 const dbConnection = async () => {
     try {
         await mongoose.connect(`${process.env.MONGODB_URI}`, { dbName: 'ChattingDB' });

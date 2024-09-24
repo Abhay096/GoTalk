@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+//********************Defining Profile schema ********************
 const profileSchema = new mongoose.Schema({
     avatar: {
         type: String,

@@ -1,30 +1,43 @@
 import express from 'express';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import { user } from '../Models/user.js';
 
+// creating router variable
 const router = express.Router();
 
 router.get('/token_data', async (req, res) => {
-    console.log(req.cookies);
+
+    //  getting token from cookies
     const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
+    //if token not found
     if (!token) {
         console.log("Not get the token!!!")
         return res.status(401).json({ message: 'No token provided' });
-    } //Checking if get the token or not
+    }
 
+    //  if token found
     try {
-        const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);  // Verify the token
-        const userPhone = decoded.phone;  // Assuming the token contains the email
+        // Verify the token
+        const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+        // Assuming the token contains the phone number  
+        const userPhone = decoded.phone;
 
-        // Fetch user data from the database using the email from the token
-        const user = await user.findOne({ phone_no: userPhone });
+        // Fetch user data from the database using the phone number from the token
+        const account = await user.findOne({ phone_no: `${userPhone}` });
 
-        if (!user) {
+        //if user not found
+        if (!account) {
             return res.status(404).json({ message: 'User not found' });
         }
-        // Send relevant user information back to the client
-        return res.json({ phone: user.phone_no });
+
+        //if user found Send relevant user information back to the client
+        return res.json({ phone: account.phone_no, message: 'User found' });
+
     } catch (err) {
+        // consoling error
+        console.error(err);
+        //  return error message
         return res.status(403).json({ message: 'Invalid token' });
     }
 });
