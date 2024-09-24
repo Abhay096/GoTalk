@@ -20,8 +20,7 @@ router.get('/token_data', async (req, res) => {
     try {
         // Verify the token
         const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
-
-        // Assuming the token contains the phone number
+        // Assuming the token contains the phone number  
         const userPhone = decoded.phone;
 
         // Fetch user data from the database using the phone number from the token
