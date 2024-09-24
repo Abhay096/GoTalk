@@ -87,7 +87,6 @@ function Register() {
                 password: cred.password,
                 phone_no: cred.phone_no
             });
-            console.log(response);
             alert(response.data.message);
         } catch (error) {
             // consoling the error
