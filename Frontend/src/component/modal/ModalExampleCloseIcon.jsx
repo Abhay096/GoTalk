@@ -13,9 +13,14 @@ import {
 } from 'semantic-ui-react'
 
 function ModalExampleCloseIcon() {
+
+    //  State for opening and closing th modal
     const [open, setOpen] = React.useState(false)
 
+    //  State for the phone number validation errors
     const [phoneError, setPhoneError] = useState("");
+
+    // Funtion for phone number validation
     const checkPhone = (phone) => {
         if (!validator.isNumeric(phone))
             setPhoneError("Phone number must contain only numbers.");
@@ -26,54 +31,69 @@ function ModalExampleCloseIcon() {
         else
             setPhoneError("");
     }
+
+    // State for form data
     const [cred, setCred] = useState({ name: "", friendPhone: "" });
+
+    //  Function to handle form data
     const onChange = (e) => {
         setCred({ ...cred, [e.target.name]: e.target.value })
     }
+
+    // Function to handle form submission
     const handleLogin = async (e) => {
+        // prevental the default nature of form
         e.preventDefault();
+
+        // calling the function and passing phone number to Validate the phone number
         checkPhone(cred.friendPhone);
 
+        //  if the phone number is not valid then return nothing
         if (phoneError !== "") {
-            return; // Prevent submission if there are errors
+            return;
         }
+
+        // try block for checking phone number really exist
         try {
+
+            //  calling the function to check if the phone number exist
             const response = await axios(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.friendPhone)}&country_code=IN`);
             console.log(response);
-            const data = await response.json()
-            if (data.valid === false) {
+            if (response.data.valid === false) {
                 alert("Phone number doesn't exist");
                 return;
             }
 
-
+            // try block to retrive data in token
             try {
                 const response = await axios.get('http://localhost:3000/api/token_data', {
                     withCredentials: true // This allows cookies to be sent with the request
                 });
-                alert(response.message);
                 const userPhone = response.data.phone;
 
+                // try block to connection user with his/her friend
                 try {
                     const user = await axios.patch('http://localhost:3000/api/connectionRequest', {
                         name: cred.name,
                         friendPhone: cred.friendPhone,
                         userPhone: userPhone
                     });
-                    alert(user.message);
+                    alert(user.data.message);
                 } catch (error) {
+                    // consoling the error
                     console.log('Error while adding user:', error);
                 }
 
             } catch (error) {
+                // consoling the error
                 console.log('Error while getting token:', error);
             }
-
-
         } catch (error) {
+            // consoling the error
             console.log('Error while Checking existance of phone number:', error);
         }
 
+        //closing the modal
         setOpen(false);
     }
 
