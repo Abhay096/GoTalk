@@ -6,11 +6,12 @@ import validator from 'validator';
 import Loader from '../component/loader/Loader';
 
 function Login() {
-
+    // State for loader
     const [displayLoader, setDisplayLoader] = useState(false);
-
+    // State for phone number validation error
     const [phoneError, setPhoneError] = useState("");
 
+    //funtion for phone validation
     const checkPhone = (phone) => {
         if (!validator.isNumeric(phone))
             setPhoneError("Phone number must contain only numbers.");
@@ -22,20 +23,30 @@ function Login() {
             setPhoneError("");
     }
 
+    // State for form credentials
     const [cred, setCred] = useState({ password: "", phone_no: "" });
+    // funtion for form credentials change
     const onChange = (e) => {
         setCred({ ...cred, [e.target.name]: e.target.value })
     }
+
+    // function for login
     const handleLogin = async (e) => {
+        // preventing default nature of form submission
         e.preventDefault();
 
+        //calling funtion to validate phone number
         checkPhone(cred.phone_no);
 
+        //if  phone number is not valid
         if (phoneError !== "") {
             return; // Prevent submission if there are errors
         }
 
+        // if  phone number is valid then start loader for processing
         setDisplayLoader(true)
+
+        //  api call for login
         try {
             const response = await axios.post(`http://localhost:3000/api/login`, {
                 password: cred.password,
@@ -48,6 +59,7 @@ function Login() {
             console.log('Error while login', error);
         }
         finally {
+            // remove loader after successful login
             setDisplayLoader(false);
         }
     }

@@ -6,19 +6,25 @@ import validator from 'validator';
 import Loader from '../component/loader/Loader';
 
 function Register() {
-
+    // state for loader
     const [displayLoader, setDisplayLoader] = useState(false)
 
+    //state for email
     const [emailError, setEmailError] = useState("")
+    //state for password
     const [passwordError, setPasswordError] = useState("")
+    //state for phone number
     const [phoneError, setPhoneError] = useState("")
 
+    //funtion to validate email
     const checkEmail = (email) => {
         if (!validator.isEmail(email))
             setEmailError('Enter a valid email');
         else
             setEmailError('');
     }
+
+    //funtion to validate password
     const checkPassword = (password) => {
         if (password.length < 8)
             setPasswordError("Password must be at least 8 characters long.");
@@ -34,6 +40,8 @@ function Register() {
             setPasswordError("");
 
     }
+
+    //funtion to validate phone number
     const checkPhone = (phone) => {
         if (!validator.isNumeric(phone))
             setPhoneError("Phone number must contain only numbers.");
@@ -45,22 +53,33 @@ function Register() {
             setPhoneError("");
     }
 
+    // state for form credentials
     const [cred, setCred] = useState({ name: "", email: "", password: "", phone_no: "" });
+    // function for form credential change
     const onChange = (e) => {
         setCred({ ...cred, [e.target.name]: e.target.value })
     }
+    //funtion to handle registration
     const handleRegister = async (e) => {
+        //preventing default nation of form submission
         e.preventDefault();
 
+        // calling email validation function
         checkEmail(cred.email);
+        //  calling phone number validation function
         checkPhone(cred.phone_no);
+        // calling password validation function
         checkPassword(cred.password);
 
+        // if find error than return nothing
         if (emailError !== "" || passwordError !== "" || phoneError !== "") {
             return; // Prevent submission if there are errors
         }
 
+        //if no error the start loader for processing
         setDisplayLoader(true)
+
+        // calling api for registration
         try {
             const response = await axios.post(`http://localhost:3000/api/register`, {
                 name: cred.name,
@@ -71,9 +90,11 @@ function Register() {
             console.log(response);
             alert(response.data.message);
         } catch (error) {
+            // consoling the error
             console.log('Error while registering', error);
         }
         finally {
+            // removing loader after processing
             setDisplayLoader(false);
         }
     }
