@@ -32,7 +32,7 @@ router.get('/token_data', async (req, res) => {
         }
 
         //if user found Send relevant user information back to the client
-        return res.json({ phone: account.phone_no, message: 'User found' });
+        return res.json({ phone: account.phone_no });
 
     } catch (err) {
         // consoling error

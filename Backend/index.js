@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import registerRouter from './Routes/register.js';
 import loginRouter from './Routes/login.js';
 import tokenRouter from './Routes/token_data.js';
+import connectionRouter from './Routes/connection.js';
 
 //configuring env file
 dotenv.config({ path: './env' });
@@ -19,6 +20,7 @@ const app = express();
 // configuring cors middleware
 app.use(cors({
     origin: process.env.CORS_ORIGIN,  //allowing cors from this origin
+    credentials: true // This allows cookies to be sent
 }));
 
 // configuring json middleware
@@ -31,9 +33,10 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 
 // importing routers
-app.use('/api', registerRouter)  //using registration route middleware
-app.use('/api', loginRouter)  //using login route middleware
-app.use('/api', tokenRouter)  //using token route middleware
+app.use('/api', registerRouter)  //using registration route 
+app.use('/api', loginRouter)  //using login route
+app.use('/api', tokenRouter)  //using token route
+app.use('/api', connectionRouter)  //using connection route
 
 // creating default route
 app.get('/', (req, res) => {

@@ -26,34 +26,52 @@ function ModalExampleCloseIcon() {
         else
             setPhoneError("");
     }
-    const [cred, setCred] = useState({ password: "", phone_no: "" });
+    const [cred, setCred] = useState({ name: "", friendPhone: "" });
     const onChange = (e) => {
         setCred({ ...cred, [e.target.name]: e.target.value })
     }
     const handleLogin = async (e) => {
         e.preventDefault();
-        checkPhone(cred.phone_no);
+        checkPhone(cred.friendPhone);
 
         if (phoneError !== "") {
             return; // Prevent submission if there are errors
         }
-
-        // try {
-        //     const response = await fetch(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.phone_no)}&country_code=IN`);
-        //     const data = await response.json()
-        //     console.log(data);
-        //     if(data.valid===false){
-        //         alert("Phone number doesn't exist");
-        //         return ;
-        //     }
-        // } catch (error) {
-        //     console.log('Error while Checking existance of phone number:', error);
-        // }
         try {
-            const response = await axios.get('http://localhost:3000/api/token_data');
-            console.log(response.json());
+            const response = await axios(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.friendPhone)}&country_code=IN`);
+            console.log(response);
+            const data = await response.json()
+            if (data.valid === false) {
+                alert("Phone number doesn't exist");
+                return;
+            }
+
+
+            try {
+                const response = await axios.get('http://localhost:3000/api/token_data', {
+                    withCredentials: true // This allows cookies to be sent with the request
+                });
+                alert(response.message);
+                const userPhone = response.data.phone;
+
+                try {
+                    const user = await axios.patch('http://localhost:3000/api/connectionRequest', {
+                        name: cred.name,
+                        friendPhone: cred.friendPhone,
+                        userPhone: userPhone
+                    });
+                    alert(user.message);
+                } catch (error) {
+                    console.log('Error while adding user:', error);
+                }
+
+            } catch (error) {
+                console.log('Error while getting token:', error);
+            }
+
+
         } catch (error) {
-            console.log('Error while getting token:', error);
+            console.log('Error while Checking existance of phone number:', error);
         }
 
         setOpen(false);
@@ -80,10 +98,10 @@ function ModalExampleCloseIcon() {
                             </div>
                             <div class="field">
                                 <label>Phone Number</label>
-                                <input required name='phone_no' type='text' placeholder="Phone No" onChange={onChange} />
+                                <input required name='friendPhone' type='text' placeholder="Phone No" onChange={onChange} />
                                 <div className='login_error'>{phoneError}</div>
                             </div>
-                            <button class="ui fluid button login_submit" type="submit">Sign in</button>
+                            <button class="ui fluid button login_submit" type="submit">Add User</button>
                         </form>
                     </div>
                 </div>

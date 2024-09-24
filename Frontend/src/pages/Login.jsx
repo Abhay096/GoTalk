@@ -43,7 +43,6 @@ function Login() {
             }, {
                 withCredentials: true // This will include cookies in the request
             });
-            console.log(response);
             alert(response.data.message);
         } catch (error) {
             console.log('Error while login', error);
