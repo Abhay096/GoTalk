@@ -8,6 +8,7 @@ const router = express.Router();
 
 // creating route for profile
 router.post('/profile', async (req, res) => {
+
     // getting image and bio from user
     const avatar = req.body.avatar;
     const bio = req.body.bio;
@@ -16,7 +17,7 @@ router.post('/profile', async (req, res) => {
     let phone;
 
     //getting token from cookies and storing it in variable
-    const token = req.cookies?.token
+    const token = req.cookies.token
 
     //if don't get the token
     if (!token) {
@@ -40,15 +41,16 @@ router.post('/profile', async (req, res) => {
         cloudinary.config({
             cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
             api_key: process.env.CLOUDINARY_API_KEY,
-            api_secret: CLOUDINARY_API_SECRET
+            api_secret: process.env.CLOUDINARY_API_SECRET
         });
+        // const avatarData = avatar.replace(/^data:image\/[a-z]+;base64,/, "");
         //uploading image on cloudinary
-        const uploadResult = await cloudinary.uploader.upload(avatar);
+        const uploadResult = await cloudinary.uploader.upload(avatar, { folder: 'GoTalk' });
 
         //uploading data in database
         await profile.create({
             phone_no: phone,
-            avatar: uploadResult,
+            avatar: uploadResult.secure_url,
             about: bio
         })
         return res.status(200).json({ message: 'Profile created successfully' });

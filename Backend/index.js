@@ -7,6 +7,8 @@ import registerRouter from './Routes/register.js';
 import loginRouter from './Routes/login.js';
 import tokenRouter from './Routes/token_data.js';
 import connectionRouter from './Routes/connection.js';
+import profileRouter from './Routes/profile.js';
+
 
 //configuring env file
 dotenv.config({ path: './env' });
@@ -24,7 +26,7 @@ app.use(cors({
 }));
 
 // configuring json middleware
-app.use(express.json({ limit: '16kb' }));
+app.use(express.json({ limit: '5mb' }));
 
 // configuring urlencoded middleware
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
@@ -37,6 +39,7 @@ app.use('/api', registerRouter)  //using registration route
 app.use('/api', loginRouter)  //using login route
 app.use('/api', tokenRouter)  //using token route
 app.use('/api', connectionRouter)  //using connection route
+app.use('/api', profileRouter)  //using profile route
 
 // creating default route
 app.get('/', (req, res) => {

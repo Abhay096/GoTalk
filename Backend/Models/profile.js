@@ -11,7 +11,7 @@ const profileSchema = new mongoose.Schema({
     about: {
         type: String,
         required: true,
-        maxlength: 100,
+        maxlength: 200,
     }
 }, { timestamps: true });
 
