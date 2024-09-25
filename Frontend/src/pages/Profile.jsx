@@ -83,16 +83,14 @@ function Profile() {
             <div className="Profile_form_outer_div">
                 <div className="login_form_inner_div">
                     <form onSubmit={handleProfile} class="ui form login_form">
-                        <div class="field" style={{ textAlign: 'center' }}>
-                            <input id="fileInput" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileInputChange} />
-                            <div onClick={handleClick} onDragOver={handleDragOver} onDrop={handleDrop} style={{
-                                display: 'inline-block', borderRadius: '50%', overflow: 'hidden', width: '300px', height: '300px', cursor: 'pointer',
-                            }}>
-                                <img src={image} className="ui avatar medium image" alt="Profile" style={{ objectFit: 'cover', }} />
+                        <div class="field" className='Profile_image_outer_div'>
+                            <input className='Profile_image_input' id="fileInput" type="file" accept="image/*" onChange={handleFileInputChange} />
+                            <div className='Profile_image_inner_div' onClick={handleClick} onDragOver={handleDragOver} onDrop={handleDrop}>
+                                <img src={image} className="ui avatar medium image Profile_image_img" alt="Profile" />
                             </div>
                         </div>
                         <div class="field">
-                            <textarea required style={{ resize: 'none' }} name="bio" rows="4" cols="50" maxLength="200" placeholder='Tell about yourself in 200 characters or less...' onChange={onChange} value={bio} />
+                            <textarea className='Profile_textarea' required name="bio" rows="4" cols="50" maxLength="200" placeholder='Tell about yourself in 200 characters or less...' onChange={onChange} value={bio} />
                         </div>
 
                         <button class="ui fluid button login_submit" type="submit">Create Profile</button>
