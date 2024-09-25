@@ -59,7 +59,7 @@ function Login() {
             console.log('Error while login', error);
         }
         finally {
-            // remove loader after successful login
+            // remove loader after successful login or error
             setDisplayLoader(false);
         }
     }

@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import './Profile.css';
 import logo from '../assets/logo.png';
 import axios from 'axios';
-
+import Loader from '../component/loader/Loader';
 
 function Profile() {
 
+    // State for loader
+    const [displayLoader, setDisplayLoader] = useState(false);
     const [bio, setBio] = useState(''); // state to store bio
     const [imageFile, setImageFile] = useState(null); // state for image
 
@@ -57,7 +59,10 @@ function Profile() {
         if (!imageFile) {
             setImageFile('https://react.semantic-ui.com/images/wireframe/square-image.png');
         }
+        // start loader for processing
+        setDisplayLoader(true)
 
+        //  api call for profile submission
         try {
             const response = await axios.post('http://localhost:3000/api/profile', {
                 avatar: image,
@@ -67,10 +72,17 @@ function Profile() {
         } catch (error) {
             console.log("Error while creating profile:", error);
         }
+        finally {
+            // remove loader after successful profile submission or error
+            setDisplayLoader(false);
+        }
     }
 
     return (
         <>
+            <div className={`profile_loader ${displayLoader ? 'profile_loader1' : ''}`}>
+                <Loader></Loader>
+            </div>
             <div className="login_header">
                 <div class="ui huge header login_logo">
                     <div>
