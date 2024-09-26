@@ -24,7 +24,7 @@ router.get('/token_data', async (req, res) => {
         const userPhone = decoded.phone;
 
         // Fetch user data from the database using the phone number from the token
-        const account = await user.findOne({ phone_no: `${userPhone}` });
+        const account = await user.findOne({ phone_no: `${userPhone}` }).select('-password -tokens');
 
         //if user not found
         if (!account) {
@@ -32,7 +32,8 @@ router.get('/token_data', async (req, res) => {
         }
 
         //if user found Send relevant user information back to the client
-        return res.json({ phone: account.phone_no });
+        // return res.json({ phone: account.phone_no });
+        return res.json({ account: account });
 
     } catch (err) {
         // consoling error

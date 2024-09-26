@@ -68,7 +68,7 @@ function ModalExampleCloseIcon() {
                 const response = await axios.get('http://localhost:3000/api/token_data', {
                     withCredentials: true // This allows cookies to be sent with the request
                 });
-                const userPhone = response.data.phone;
+                const userPhone = response.data.account.phone;
 
                 // try block to connection user with his/her friend
                 try {

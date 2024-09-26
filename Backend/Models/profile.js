@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 //********************Defining Profile schema ********************
 const profileSchema = new mongoose.Schema({
     phone_no: {
-        type: String
+        type: String,
+        unique: true
     },
     avatar: {
         type: String,

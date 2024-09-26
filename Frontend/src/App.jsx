@@ -10,8 +10,8 @@ function App() {
     <div className='app_main_div'>
       {/* <Register></Register> */}
       {/* <Login></Login> */}
-      {/* <Chat></Chat> */}
-      <Profile></Profile>
+      <Chat></Chat>
+      {/* <Profile></Profile> */}
     </div>
   )
 }

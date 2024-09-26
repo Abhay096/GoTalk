@@ -19,7 +19,7 @@ router.patch('/connectionRequest', async (req, res) => {
 
         // If friend not using GoTalk then returning message
         if (!friendUseApp) {
-            return res.status(200).json({ 'message': "This user don't use this application" })
+            return res.status(200).json({ 'message': "This user don't use Go Talk" })
         }
 
     } catch (error) {

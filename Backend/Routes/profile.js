@@ -47,6 +47,12 @@ router.post('/profile', async (req, res) => {
         //uploading image on cloudinary
         const uploadResult = await cloudinary.uploader.upload(avatar, { folder: 'GoTalk' });
 
+        const userExist = await profile.findOne({ phone_no: phone });
+        if (userExist) {
+            await profile.updateOne({ phone_no: phone }, { $set: { avatar: uploadResult.secure_url, about: bio } });
+            return res.status(200).json({ message: 'Profile update successfully' });
+        }
+
         //uploading data in database
         await profile.create({
             phone_no: phone,

@@ -8,6 +8,7 @@ import loginRouter from './Routes/login.js';
 import tokenRouter from './Routes/token_data.js';
 import connectionRouter from './Routes/connection.js';
 import profileRouter from './Routes/profile.js';
+import profileFetchRouter from './Routes/profile_fetch.js';
 
 
 //configuring env file
@@ -39,7 +40,8 @@ app.use('/api', registerRouter)  //using registration route
 app.use('/api', loginRouter)  //using login route
 app.use('/api', tokenRouter)  //using token route
 app.use('/api', connectionRouter)  //using connection route
-app.use('/api', profileRouter)  //using profile route
+app.use('/api', profileRouter)  //using profile creation route
+app.use('/api', profileFetchRouter)  //using profile data fetch route
 
 // creating default route
 app.get('/', (req, res) => {
