@@ -4,3 +4,11 @@
     background-color: white;
     padding: 2em;
 }
+
+.modal_loader {
+    display: none;
+}
+
+.modal_loader1 {
+    display: block;
+}

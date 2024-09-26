@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ModalExampleCloseIcon.css';
 import validator from 'validator';
 import axios from 'axios';
+import Loader from '../loader/Loader';
 
 import {
     ModalContent,
@@ -13,6 +14,9 @@ import {
 } from 'semantic-ui-react'
 
 function ModalExampleCloseIcon() {
+
+    //state for loader
+    const [displayLoader, setDisplayLoader] = useState(false);
 
     //  State for opening and closing th modal
     const [open, setOpen] = React.useState(false)
@@ -52,7 +56,7 @@ function ModalExampleCloseIcon() {
         if (phoneError !== "") {
             return;
         }
-
+        setDisplayLoader(true)
         // try block for checking phone number really exist
         try {
             //  calling the function to check if the phone number exist
@@ -91,6 +95,8 @@ function ModalExampleCloseIcon() {
             console.log('Error while Checking existance of phone number:', error);
         }
 
+        // remove loader after successful friend connection
+        setDisplayLoader(false);
         //closing the modal
         setOpen(false);
     }
@@ -105,6 +111,9 @@ function ModalExampleCloseIcon() {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
         >
+            <div className={`modal_loader ${displayLoader ? 'modal_loader1' : ''}`}>
+                <Loader></Loader>
+            </div>
             <Header icon='user' content='Add User' />
             <ModalContent>
                 <div className="login_form_outer_div">
