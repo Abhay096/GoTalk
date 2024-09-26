@@ -8,26 +8,25 @@ import Popover from '../component/popover/Popover';
 function Chat() {
     const [userProfileImage, setUserProfileImage] = useState('');
     const [connectionArray, setConnectionArray] = useState([]);
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
-                console.log(profile);
-                const user_Profile = profile.data.userProfile;
-                setUserProfileImage(user_Profile.avatar);
-            } catch (error) {
-                console.log("Error while fetching user profile data", error);
-            }
-
-            try {
-                const response = await axios.get('http://localhost:3000/api/connectionFetch', {
-                    withCredentials: true
-                });
-                setConnectionArray(response.data.connections.connection);
-            } catch (error) {
-
-            }
+    const loadData = async () => {
+        try {
+            const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
+            const user_Profile = profile.data.userProfile;
+            setUserProfileImage(user_Profile.avatar);
+        } catch (error) {
+            console.log("Error while fetching user profile data", error);
         }
+
+        try {
+            const response = await axios.get('http://localhost:3000/api/connectionFetch', {
+                withCredentials: true
+            });
+            setConnectionArray(response.data.connections.connection);
+        } catch (error) {
+            console.log("Error while fetching connections", error);
+        }
+    }
+    useEffect(() => {
         loadData();
     }, []);
     return (
@@ -35,7 +34,7 @@ function Chat() {
             <div className='Chat_contact'>
                 <div className="Chat_contact_header">
                     <h2 class="ui header Chat_contact_header_chat">Chats</h2>
-                    <ModalExampleCloseIcon></ModalExampleCloseIcon>
+                    <ModalExampleCloseIcon onClose={loadData}></ModalExampleCloseIcon>
                 </div>
                 <div className="Chat_contact_search">
                     <input className='Chat_contact_search_input' type="search" name="" id="" placeholder='Search...' />

@@ -13,7 +13,7 @@ import {
     Modal,
 } from 'semantic-ui-react'
 
-function ModalExampleCloseIcon() {
+function ModalExampleCloseIcon({ onClose }) {
 
     //state for loader
     const [displayLoader, setDisplayLoader] = useState(false);
@@ -99,6 +99,7 @@ function ModalExampleCloseIcon() {
         setDisplayLoader(false);
         //closing the modal
         setOpen(false);
+        onClose();
     }
 
 
