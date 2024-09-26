@@ -29,7 +29,11 @@ const userSchema = new mongoose.Schema({
         type: [
             {
                 key: { type: String, }, // This is for phone number
-                value: { type: String, } // This is for name
+                value: { type: String, }, // This is for name
+                createdAt: {
+                    type: Date,
+                    default: Date.now // This captures both date and time
+                }
             }
         ],
     },

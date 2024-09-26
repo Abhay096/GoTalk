@@ -3,12 +3,14 @@ import dbConnection from "./DB/db.js";
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+
 import registerRouter from './Routes/register.js';
 import loginRouter from './Routes/login.js';
 import tokenRouter from './Routes/token_data.js';
 import connectionRouter from './Routes/connection.js';
 import profileRouter from './Routes/profile.js';
 import profileFetchRouter from './Routes/profile_fetch.js';
+import connectionFetchRouter from './Routes/connectionFetch.js'
 
 
 //configuring env file
@@ -42,6 +44,7 @@ app.use('/api', tokenRouter)  //using token route
 app.use('/api', connectionRouter)  //using connection route
 app.use('/api', profileRouter)  //using profile creation route
 app.use('/api', profileFetchRouter)  //using profile data fetch route
+app.use('/api', connectionFetchRouter)  //using profile data fetch route
 
 // creating default route
 app.get('/', (req, res) => {

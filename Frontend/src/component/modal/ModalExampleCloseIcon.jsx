@@ -55,7 +55,6 @@ function ModalExampleCloseIcon() {
 
         // try block for checking phone number really exist
         try {
-
             //  calling the function to check if the phone number exist
             const response = await axios(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.friendPhone)}&country_code=IN`);
             if (response.data.valid === false) {
@@ -68,7 +67,7 @@ function ModalExampleCloseIcon() {
                 const response = await axios.get('http://localhost:3000/api/token_data', {
                     withCredentials: true // This allows cookies to be sent with the request
                 });
-                const userPhone = response.data.account.phone;
+                const userPhone = response.data.account.phone_no;
 
                 // try block to connection user with his/her friend
                 try {

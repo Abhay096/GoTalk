@@ -6,14 +6,25 @@ import axios from 'axios';
 
 function Chat() {
     const [userProfileImage, setUserProfileImage] = useState('');
+    const [connectionArray, setConnectionArray] = useState([]);
     useEffect(() => {
         const loadData = async () => {
             try {
-                const profile = await axios.get('http://localhost:3000/api/profile_fetch', { withCredentials: true });
+                const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
+                console.log(profile);
                 const user_Profile = profile.data.userProfile;
                 setUserProfileImage(user_Profile.avatar);
             } catch (error) {
                 console.log("Error while fetching user profile data", error);
+            }
+
+            try {
+                const response = await axios.get('http://localhost:3000/api/connectionFetch', {
+                    withCredentials: true
+                });
+                setConnectionArray(response.data.connections.connection);
+            } catch (error) {
+
             }
         }
         loadData();
@@ -29,8 +40,11 @@ function Chat() {
                     <input className='Chat_contact_search_input' type="search" name="" id="" placeholder='Search...' />
                 </div>
                 <div className='Chat_contact_contact'>
-                    <Contact></Contact>
-                    <Contact></Contact>
+                    {/* <Contact></Contact>
+                    <Contact></Contact> */}
+                    {connectionArray.map((connection, index) => (
+                        <Contact key={index} name={connection.value} phone={connection.key} />
+                    ))}
 
                 </div>
                 <div className='Chat_contact_footer'>
