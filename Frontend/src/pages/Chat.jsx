@@ -3,6 +3,7 @@ import './Chat.css';
 import Contact from '../component/contact/Contact';
 import ModalExampleCloseIcon from '../component/modal/ModalExampleCloseIcon';
 import axios from 'axios';
+import Popover from '../component/popover/Popover';
 
 function Chat() {
     const [userProfileImage, setUserProfileImage] = useState('');
@@ -48,8 +49,12 @@ function Chat() {
 
                 </div>
                 <div className='Chat_contact_footer'>
-                    <div className='Chat_contact_footer_avatar_div'><img src={userProfileImage} class="ui avatar image" /></div>
-                    <div><i aria-hidden="true" class="setting large fitted icon"></i></div>
+                    <div className='Chat_contact_footer_avatar_div'>
+                        <Popover trigger={<img src={userProfileImage} class="ui avatar image" />} content="Your Profile"></Popover>
+                    </div>
+                    <div>
+                        <Popover trigger={<i aria-hidden="true" class="setting large fitted icon"></i>} content="Settings"></Popover>
+                    </div>
                 </div>
             </div>
             <div className='Chat_message'>j</div>
