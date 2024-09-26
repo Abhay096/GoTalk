@@ -31,8 +31,7 @@ router.get('/token_data', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        //if user found Send relevant user information back to the client
-        // return res.json({ phone: account.phone_no });
+        //if user found Send account back to the client
         return res.json({ account: account });
 
     } catch (err) {

@@ -43,26 +43,30 @@ router.post('/profile', async (req, res) => {
             api_key: process.env.CLOUDINARY_API_KEY,
             api_secret: process.env.CLOUDINARY_API_SECRET
         });
-        // const avatarData = avatar.replace(/^data:image\/[a-z]+;base64,/, "");
+
         //uploading image on cloudinary
         const uploadResult = await cloudinary.uploader.upload(avatar, { folder: 'GoTalk' });
 
+        //block to update user profile if it pre-exist
         const userExist = await profile.findOne({ phone_no: phone });
         if (userExist) {
             await profile.updateOne({ phone_no: phone }, { $set: { avatar: uploadResult.secure_url, about: bio } });
             return res.status(200).json({ message: 'Profile update successfully' });
         }
 
-        //uploading data in database
+        //creating the profile and uploading data in database if user is not pre-exist
         await profile.create({
             phone_no: phone,
             avatar: uploadResult.secure_url,
             about: bio
-        })
+        });
+        // returning the response
         return res.status(200).json({ message: 'Profile created successfully' });
 
     } catch (error) {
+        // consoling the error
         console.log("Profile Error:", error);
+        //returning the error
         return res.status(500).json({ message: 'Error creating profile' });
     }
 });

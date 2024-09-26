@@ -6,8 +6,12 @@ import axios from 'axios';
 import Popover from '../component/popover/Popover';
 
 function Chat() {
+    //state to store user profile image
     const [userProfileImage, setUserProfileImage] = useState('');
+    // state to store array of connections
     const [connectionArray, setConnectionArray] = useState([]);
+
+    //function to fetch profiles data and connection array
     const loadData = async () => {
         try {
             const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
@@ -26,6 +30,8 @@ function Chat() {
             console.log("Error while fetching connections", error);
         }
     }
+
+    //hook which render automatically when page first render and call the function
     useEffect(() => {
         loadData();
     }, []);
@@ -40,8 +46,6 @@ function Chat() {
                     <input className='Chat_contact_search_input' type="search" name="" id="" placeholder='Search...' />
                 </div>
                 <div className='Chat_contact_contact'>
-                    {/* <Contact></Contact>
-                    <Contact></Contact> */}
                     {connectionArray.map((connection, index) => (
                         <Contact key={index} name={connection.value} phone={connection.key} />
                     ))}

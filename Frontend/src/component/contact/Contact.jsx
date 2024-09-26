@@ -4,15 +4,22 @@ import './Contact.css'
 import defimg from '../../assets/defimg.jpg'
 import axios from 'axios'
 
-function Contact({ name, phone }) {
+function Contact({ name, phone }) { //getting name and phone number as a property
+
+    // state to store user profile image
     const [avatar, setAvatar] = useState('');
+
+    // hook which run when it render first time
     useEffect(() => {
+
+        // function to get user profile image
         const friendprofile = async () => {
             const profile = await axios.post('http://localhost:3000/api/profile_fetch', {
                 phone: phone
             }, { withCredentials: true });
             setAvatar(profile.data.userProfile.avatar);
         }
+        // calling the function
         friendprofile();
     }, []);
     return (

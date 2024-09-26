@@ -49,20 +49,25 @@ function Profile() {
     };
     //********************End of upload drag and drop functionality********************
 
+    //function to handle text area input
     const onChange = (e) => {
         setBio(e.target.value);
     }
 
+    // function to handle submission of profile data
     const handleProfile = async (e) => {
+        //preventing default nature of form submission 
         e.preventDefault();
 
+        //if dont get the image then send the default image
         if (!imageFile) {
             setImageFile('https://react.semantic-ui.com/images/wireframe/square-image.png');
         }
+
         // start loader for processing
         setDisplayLoader(true)
 
-        //  api call for profile submission
+        //  api call for profile data submission
         try {
             const response = await axios.post('http://localhost:3000/api/profile', {
                 avatar: image,

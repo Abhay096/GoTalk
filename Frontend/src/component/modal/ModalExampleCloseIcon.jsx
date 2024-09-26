@@ -4,16 +4,9 @@ import validator from 'validator';
 import axios from 'axios';
 import Loader from '../loader/Loader';
 
-import {
-    ModalContent,
-    ModalActions,
-    Button,
-    Header,
-    Icon,
-    Modal,
-} from 'semantic-ui-react'
+import { ModalContent, ModalActions, Button, Header, Icon, Modal, } from 'semantic-ui-react'
 
-function ModalExampleCloseIcon({ onClose }) {
+function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
 
     //state for loader
     const [displayLoader, setDisplayLoader] = useState(false);
@@ -56,7 +49,10 @@ function ModalExampleCloseIcon({ onClose }) {
         if (phoneError !== "") {
             return;
         }
+
+        // loader for processing the data
         setDisplayLoader(true)
+
         // try block for checking phone number really exist
         try {
             //  calling the function to check if the phone number exist
@@ -99,9 +95,9 @@ function ModalExampleCloseIcon({ onClose }) {
         setDisplayLoader(false);
         //closing the modal
         setOpen(false);
+        // calling funtion which passed as a prop it is used to render contact everytime when new friend is added
         onClose();
     }
-
 
     return (
         <Modal
