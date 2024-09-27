@@ -7,7 +7,7 @@ import MultiFuncModal from './MultiFuncModal';
 
 import { ModalContent, ModalActions, Button, Header, Icon, Modal, } from 'semantic-ui-react'
 
-function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
+function ModalExampleCloseIcon({ onClose, trigger }) { //function passed as a prop
 
     //state for loader
     const [displayLoader, setDisplayLoader] = useState(false);
@@ -112,7 +112,7 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
     }
 
     return (
-        <Modal size='tiny' closeIcon open={open} trigger={<i aria-hidden="true" style={{ cursor: 'pointer' }} class="plus large icon"></i>} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
+        <Modal size='tiny' closeIcon open={open} trigger={trigger} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
             <div className={`modal_loader ${displayLoader ? 'modal_loader1' : ''}`}>
                 <Loader></Loader>
             </div>

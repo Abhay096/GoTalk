@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import logo from '../../assets/logo.png'
-import './Contact.css'
-import defimg from '../../assets/defimg.jpg'
-import axios from 'axios'
+import './Contact.css';
+import axios from 'axios';
 
-function Contact({ name, phone }) { //getting name and phone number as a property
+function Contact({ name, phone, id }) {       //getting name and phone number as a prop
 
     // state to store user profile image
     const [avatar, setAvatar] = useState('');
@@ -23,7 +21,7 @@ function Contact({ name, phone }) { //getting name and phone number as a propert
         friendprofile();
     }, []);
     return (
-        <div className='Contact_main_div'>
+        <div className='Contact_main_div' id={id}>
             <div className='Contact_image_div'>
                 <img src={avatar} className="ui avatar image Contact_image" />
             </div>

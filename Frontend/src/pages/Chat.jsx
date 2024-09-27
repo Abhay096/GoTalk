@@ -52,25 +52,27 @@ function Chat() {
             <div className='Chat_contact'>
                 <div className="Chat_contact_header">
                     <h2 class="ui header Chat_contact_header_chat">Chats</h2>
-                    <ModalExampleCloseIcon onClose={loadData}></ModalExampleCloseIcon>
+                    <ModalExampleCloseIcon trigger={<div>
+                        <Popover trigger={<i aria-hidden="true" style={{ cursor: 'pointer' }} class="plus large icon"></i>} content="Add user"></Popover>
+                    </div>} onClose={loadData}></ModalExampleCloseIcon>
                 </div>
                 <div className="Chat_contact_search">
                     <input className='Chat_contact_search_input' type="search" name="" id="" placeholder='Search...' />
                 </div>
                 <div className='Chat_contact_contact'>
                     {connectionArray.map((connection, index) => (
-                        <Contact key={index} name={connection.value} phone={connection.key} />
+                        <Contact id={index} key={index} name={connection.value} phone={connection.key} />
                     ))}
 
                 </div>
                 <div className='Chat_contact_footer'>
                     <div className='Chat_contact_footer_avatar_div'>
                         <MultiFuncModal state={setModalOpen} type={'profile'} trigger={<div>
-                            <Popover trigger={<img src={userProfileImage} class="ui avatar image" />} content="Your Profile"></Popover>
+                            <Popover trigger={<img style={{ cursor: 'pointer' }} src={userProfileImage} class="ui avatar image" />} content="Your Profile"></Popover>
                         </div>} />
                     </div>
                     <div>
-                        <Popover trigger={<i aria-hidden="true" class="setting large fitted icon"></i>} content="Settings"></Popover>
+                        <Popover trigger={<i style={{ cursor: 'pointer' }} aria-hidden="true" class="setting large fitted icon"></i>} content="Settings"></Popover>
                     </div>
                 </div>
             </div>
