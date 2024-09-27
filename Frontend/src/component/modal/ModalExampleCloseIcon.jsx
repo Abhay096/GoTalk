@@ -100,14 +100,7 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
     }
 
     return (
-        <Modal
-            size='tiny'
-            closeIcon
-            open={open}
-            trigger={<i aria-hidden="true" style={{ cursor: 'pointer' }} class="plus large icon"></i>}
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-        >
+        <Modal size='tiny' closeIcon open={open} trigger={<i aria-hidden="true" style={{ cursor: 'pointer' }} class="plus large icon"></i>} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
             <div className={`modal_loader ${displayLoader ? 'modal_loader1' : ''}`}>
                 <Loader></Loader>
             </div>

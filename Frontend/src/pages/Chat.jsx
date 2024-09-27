@@ -4,12 +4,15 @@ import Contact from '../component/contact/Contact';
 import ModalExampleCloseIcon from '../component/modal/ModalExampleCloseIcon';
 import axios from 'axios';
 import Popover from '../component/popover/Popover';
+import MultiFuncModal from '../component/modal/MultiFuncModal';
 
 function Chat() {
     //state to store user profile image
     const [userProfileImage, setUserProfileImage] = useState('');
     // state to store array of connections
     const [connectionArray, setConnectionArray] = useState([]);
+    // checking if multifuncmodel is open or closed
+    const [modalOpen, setModalOpen] = useState(false);
 
     //function to fetch profiles data and connection array
     const loadData = async () => {
@@ -17,6 +20,7 @@ function Chat() {
             const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
             const user_Profile = profile.data.userProfile;
             setUserProfileImage(user_Profile.avatar);
+            setModalOpen(false);
         } catch (error) {
             console.log("Error while fetching user profile data", error);
         }
@@ -35,6 +39,11 @@ function Chat() {
     useEffect(() => {
         loadData();
     }, []);
+
+    useEffect(() => {
+        if (modalOpen)
+            loadData();
+    }, [modalOpen]);
     return (
         <div className='Chat_main_div'>
             <div className='Chat_contact'>
@@ -53,7 +62,9 @@ function Chat() {
                 </div>
                 <div className='Chat_contact_footer'>
                     <div className='Chat_contact_footer_avatar_div'>
-                        <Popover trigger={<img src={userProfileImage} class="ui avatar image" />} content="Your Profile"></Popover>
+                        <MultiFuncModal state={setModalOpen} type={'profile'} trigger={<div>
+                            <Popover trigger={<img src={userProfileImage} class="ui avatar image" />} content="Your Profile"></Popover>
+                        </div>} />
                     </div>
                     <div>
                         <Popover trigger={<i aria-hidden="true" class="setting large fitted icon"></i>} content="Settings"></Popover>

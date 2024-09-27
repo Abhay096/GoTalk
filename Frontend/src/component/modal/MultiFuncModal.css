@@ -1,0 +1,42 @@
+.MultiFuncModel_profile_form {
+    width: 87%;
+    min-width: 35%;
+    background-color: white;
+    padding: 2em;
+}
+
+.MultiFuncModel_Profile_image_inner_div {
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 250px;
+    height: 250px;
+    cursor: pointer;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .MultiFuncModel_profile_form {
+        width: 82%;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 425px) {
+    .MultiFuncModel_Profile_image_inner_div {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 425px) {
+    .MultiFuncModel_Profile_image_inner_div {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 374px) {
+    .MultiFuncModel_Profile_image_inner_div {
+        width: 150px;
+        height: 150px;
+    }
+}
