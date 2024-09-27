@@ -19,7 +19,9 @@ function Chat() {
         try {
             const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
             const user_Profile = profile.data.userProfile;
+            //setting the message for modal
             setUserProfileImage(user_Profile.avatar);
+            //opening the modal
             setModalOpen(false);
         } catch (error) {
             console.log("Error while fetching user profile data", error);
@@ -40,6 +42,7 @@ function Chat() {
         loadData();
     }, []);
 
+    //hook to load data every time after updating the madal by closing the modal
     useEffect(() => {
         if (modalOpen)
             loadData();

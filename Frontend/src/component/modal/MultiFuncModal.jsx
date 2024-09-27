@@ -4,12 +4,17 @@ import { ModalContent, ModalActions, Button, Header, Icon, Modal, } from 'semant
 import axios from 'axios';
 
 function MultiFuncModal({ trigger, type, state, body, opening }) {
-    const [open, setOpen] = React.useState(false)
-    const [imageFile, setImageFile] = useState(null); // state for image
-    const [bio, setBio] = useState('')
 
+    // state for modal open or close
+    const [open, setOpen] = React.useState(false)
+    // state for image file
+    const [imageFile, setImageFile] = useState(null);
+    // state for user about 
+    const [bio, setBio] = useState('')
+    // state for user image
     const [image, setImage] = useState('');
 
+    // function to load profile data
     const loadProfile = async () => {
         try {
             const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
@@ -20,6 +25,8 @@ function MultiFuncModal({ trigger, type, state, body, opening }) {
             console.log("Error while fetching user profile data", error);
         }
     }
+
+    // calling the loadProfile function every time when modal is opened
     useEffect(() => {
         if (open)
             loadProfile()
@@ -67,13 +74,18 @@ function MultiFuncModal({ trigger, type, state, body, opening }) {
         state(true)
         console.log(response.data.message);
     }
+
+    // function to prevent default nature of form
     const preventDefaultForm = (e) => {
         e.preventDefault()
     }
+
+    // function to handle the change event of input fields
     const onChange = (e) => {
         setBio(e.target.value);
     }
 
+    // if modal type is profile then render this modal 
     if (type === 'profile') {
         return (
             <Modal size='tiny' closeIcon open={open} trigger={trigger} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
@@ -108,7 +120,7 @@ function MultiFuncModal({ trigger, type, state, body, opening }) {
     }
 
 
-
+    // if modal type is message then render this modal
     if (type === 'message') {
         return (
             <Modal

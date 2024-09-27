@@ -64,7 +64,9 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
             //  calling the function to check if the phone number exist
             const response = await axios(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.friendPhone)}&country_code=IN`);
             if (response.data.valid === false) {
+                //setting the message for modal
                 setResponseMessage("Phone number doesn't exist")
+                // opening the modal
                 setModalOpen(true);
                 return;
             }
@@ -83,7 +85,9 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
                         friendPhone: cred.friendPhone,
                         userPhone: userPhone
                     });
+                    // setting the message for modal
                     setResponseMessage(user.data.message)
+                    // opening the modal
                     setModalOpen(true);
                 } catch (error) {
                     // consoling the error

@@ -9,8 +9,10 @@ function Profile() {
 
     // State for loader
     const [displayLoader, setDisplayLoader] = useState(false);
-    const [bio, setBio] = useState(''); // state to store bio
-    const [imageFile, setImageFile] = useState(null); // state for image
+    // state to store bio
+    const [bio, setBio] = useState('');
+    // state for image
+    const [imageFile, setImageFile] = useState(null);
     //state to store response message
     const [responseMessage, setResponseMessage] = useState("");
     //  State for modal open and close
@@ -38,7 +40,6 @@ function Profile() {
     const handleDragOver = (e) => {
         e.preventDefault();
     };
-
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -78,7 +79,9 @@ function Profile() {
                 avatar: image,
                 bio: bio
             }, { withCredentials: true });// This allows cookies to be sent with the request
+            //setting the response for modal
             setResponseMessage(response.data.message)
+            //opening the modal
             setModalOpen(true);
         } catch (error) {
             console.log("Error while creating profile:", error);

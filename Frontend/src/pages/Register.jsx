@@ -11,11 +11,12 @@ function Register() {
     const [displayLoader, setDisplayLoader] = useState(false)
 
     //state for email
-    const [emailError, setEmailError] = useState("")
+    const [emailError, setEmailError] = useState("");
     //state for password
-    const [passwordError, setPasswordError] = useState("")
+    const [passwordError, setPasswordError] = useState("");
     //state for phone number
-    const [phoneError, setPhoneError] = useState("")
+    const [phoneError, setPhoneError] = useState("");
+
     //state to store response message
     const [responseMessage, setResponseMessage] = useState("");
     //  State for modal open and close
@@ -64,6 +65,7 @@ function Register() {
     const onChange = (e) => {
         setCred({ ...cred, [e.target.name]: e.target.value })
     }
+
     //funtion to handle registration
     const handleRegister = async (e) => {
         //preventing default nation of form submission
@@ -92,7 +94,9 @@ function Register() {
                 password: cred.password,
                 phone_no: cred.phone_no
             });
+            //Setting the response message for modal
             setResponseMessage(response.data.message)
+            //opening the modal
             setModalOpen(true);
         } catch (error) {
             // consoling the error

@@ -31,6 +31,7 @@ function Login() {
 
     // State for form credentials
     const [cred, setCred] = useState({ password: "", phone_no: "" });
+
     // funtion for form credentials change
     const onChange = (e) => {
         setCred({ ...cred, [e.target.name]: e.target.value })
@@ -60,7 +61,9 @@ function Login() {
             }, {
                 withCredentials: true // This will include cookies in the request
             });
+            // setting response message
             setResponseMessage(response.data.message)
+            // opeing the modal
             setModalOpen(true);
         } catch (error) {
             console.log('Error while login', error);
