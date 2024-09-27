@@ -3,6 +3,7 @@ import './Profile.css';
 import logo from '../assets/logo.png';
 import axios from 'axios';
 import Loader from '../component/loader/Loader';
+import MultiFuncModal from '../component/modal/MultiFuncModal';
 
 function Profile() {
 
@@ -10,6 +11,10 @@ function Profile() {
     const [displayLoader, setDisplayLoader] = useState(false);
     const [bio, setBio] = useState(''); // state to store bio
     const [imageFile, setImageFile] = useState(null); // state for image
+    //state to store response message
+    const [responseMessage, setResponseMessage] = useState("");
+    //  State for modal open and close
+    const [modalOpen, setModalOpen] = useState(false);
 
     // ********************handle upload, drag and drop functionality********************
     const [image, setImage] = useState('https://react.semantic-ui.com/images/wireframe/square-image.png');
@@ -73,7 +78,8 @@ function Profile() {
                 avatar: image,
                 bio: bio
             }, { withCredentials: true });// This allows cookies to be sent with the request
-            alert(response.data.message);
+            setResponseMessage(response.data.message)
+            setModalOpen(true);
         } catch (error) {
             console.log("Error while creating profile:", error);
         }
@@ -88,6 +94,7 @@ function Profile() {
             <div className={`profile_loader ${displayLoader ? 'profile_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
+            <MultiFuncModal state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <div className="login_header">
                 <div class="ui huge header login_logo">
                     <div>

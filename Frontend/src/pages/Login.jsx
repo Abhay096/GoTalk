@@ -4,12 +4,18 @@ import './Login.css';
 import axios from 'axios';
 import validator from 'validator';
 import Loader from '../component/loader/Loader';
+import MultiFuncModal from '../component/modal/MultiFuncModal';
 
 function Login() {
     // State for loader
     const [displayLoader, setDisplayLoader] = useState(false);
     // State for phone number validation error
     const [phoneError, setPhoneError] = useState("");
+    //state to store response message
+    const [responseMessage, setResponseMessage] = useState("");
+    //  State for modal open and close
+    const [modalOpen, setModalOpen] = useState(false);
+
 
     //funtion for phone validation
     const checkPhone = (phone) => {
@@ -54,7 +60,8 @@ function Login() {
             }, {
                 withCredentials: true // This will include cookies in the request
             });
-            alert(response.data.message);
+            setResponseMessage(response.data.message)
+            setModalOpen(true);
         } catch (error) {
             console.log('Error while login', error);
         }
@@ -68,6 +75,7 @@ function Login() {
             <div className={`login_loader ${displayLoader ? 'login_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
+            <MultiFuncModal state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <div className="login_header">
                 <div class="ui huge header login_logo">
                     <div>

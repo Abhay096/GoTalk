@@ -4,6 +4,7 @@ import './Register.css';
 import axios from 'axios';
 import validator from 'validator';
 import Loader from '../component/loader/Loader';
+import MultiFuncModal from '../component/modal/MultiFuncModal';
 
 function Register() {
     // state for loader
@@ -15,6 +16,10 @@ function Register() {
     const [passwordError, setPasswordError] = useState("")
     //state for phone number
     const [phoneError, setPhoneError] = useState("")
+    //state to store response message
+    const [responseMessage, setResponseMessage] = useState("");
+    //  State for modal open and close
+    const [modalOpen, setModalOpen] = useState(false);
 
     //funtion to validate email
     const checkEmail = (email) => {
@@ -87,7 +92,8 @@ function Register() {
                 password: cred.password,
                 phone_no: cred.phone_no
             });
-            alert(response.data.message);
+            setResponseMessage(response.data.message)
+            setModalOpen(true);
         } catch (error) {
             // consoling the error
             console.log('Error while registering', error);
@@ -102,6 +108,7 @@ function Register() {
             <div className={`register_loader ${displayLoader ? 'register_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
+            <MultiFuncModal state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <div className="Register_header">
                 <div class="ui huge header Register_logo">
                     <div>

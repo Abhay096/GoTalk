@@ -3,6 +3,7 @@ import './ModalExampleCloseIcon.css';
 import validator from 'validator';
 import axios from 'axios';
 import Loader from '../loader/Loader';
+import MultiFuncModal from './MultiFuncModal';
 
 import { ModalContent, ModalActions, Button, Header, Icon, Modal, } from 'semantic-ui-react'
 
@@ -16,6 +17,11 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
 
     //  State for the phone number validation errors
     const [phoneError, setPhoneError] = useState("");
+
+    //state to store response message
+    const [responseMessage, setResponseMessage] = useState("");
+    //  State for modal open and close
+    const [modalOpen, setModalOpen] = useState(false);
 
     // Funtion for phone number validation
     const checkPhone = (phone) => {
@@ -58,7 +64,8 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
             //  calling the function to check if the phone number exist
             const response = await axios(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.friendPhone)}&country_code=IN`);
             if (response.data.valid === false) {
-                alert("Phone number doesn't exist");
+                setResponseMessage("Phone number doesn't exist")
+                setModalOpen(true);
                 return;
             }
 
@@ -76,7 +83,8 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
                         friendPhone: cred.friendPhone,
                         userPhone: userPhone
                     });
-                    alert(user.data.message);
+                    setResponseMessage(user.data.message)
+                    setModalOpen(true);
                 } catch (error) {
                     // consoling the error
                     console.log('Error while adding user:', error);
@@ -104,6 +112,7 @@ function ModalExampleCloseIcon({ onClose }) { //function passed as a prop
             <div className={`modal_loader ${displayLoader ? 'modal_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
+            <MultiFuncModal state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <Header icon='user' content='Add User' />
             <ModalContent>
                 <div className="login_form_outer_div">

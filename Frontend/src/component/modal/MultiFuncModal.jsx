@@ -3,7 +3,7 @@ import './MultiFuncModal.css';
 import { ModalContent, ModalActions, Button, Header, Icon, Modal, } from 'semantic-ui-react';
 import axios from 'axios';
 
-function MultiFuncModal({ trigger, type, state }) {
+function MultiFuncModal({ trigger, type, state, body, opening }) {
     const [open, setOpen] = React.useState(false)
     const [imageFile, setImageFile] = useState(null); // state for image
     const [bio, setBio] = useState('')
@@ -107,8 +107,29 @@ function MultiFuncModal({ trigger, type, state }) {
         )
     }
 
-    else if (type === 'message') {
 
+
+    if (type === 'message') {
+        return (
+            <Modal
+                size='tiny'
+                closeIcon
+                open={opening}
+                trigger={trigger}
+                onClose={() => state(false)}
+                onOpen={() => state(true)}
+            >
+                <Header icon='alarm' content='Message' />
+                <ModalContent>
+                    <h3>{body}</h3>
+                </ModalContent>
+                <ModalActions>
+                    <Button color='green' onClick={() => state(false)}>
+                        <Icon name='checkmark' /> Yes
+                    </Button>
+                </ModalActions>
+            </Modal>
+        )
     }
 
 }
