@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Contact.css';
 import axios from 'axios';
 
-function Contact({ name, phone, id, length, setSelectedContact, selectedContact }) {       //getting name and phone number as a prop
+function Contact({ name, phone, id, length, setSelectedContact, selectedContact, }) {       //getting name and phone number as a prop
 
     // state to store user profile image
     const [avatar, setAvatar] = useState('');

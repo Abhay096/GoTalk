@@ -5,6 +5,9 @@ import ModalExampleCloseIcon from '../component/modal/ModalExampleCloseIcon';
 import axios from 'axios';
 import Popover from '../component/popover/Popover';
 import MultiFuncModal from '../component/modal/MultiFuncModal';
+import defimg from '../assets/defimg.jpg';
+import Sender from '../component/sender_message/Sender';
+import Receiver from '../component/receiver_message/Receiver';
 
 function Chat() {
     //state to store user profile image
@@ -15,7 +18,9 @@ function Chat() {
     const [modalOpen, setModalOpen] = useState(false);
     // state for length of the array
     const [length, setLength] = useState(0);
+    // state to change the style of contact tab to know user is chatting with whom
     const [selectedContact, setSelectedContact] = useState(null);
+
 
 
     //function to fetch profiles data and connection array
@@ -82,7 +87,25 @@ function Chat() {
                     </div>
                 </div>
             </div>
-            <div className='Chat_message'>j</div>
+
+
+
+            <div className='Chat_message'>
+                <div className="Chat_message_profile_header">
+                    <img src={defimg} className="ui mini avatar image Chat_message_profile_header_image" />
+                    <h3 className='Chat_message_profile_header_name'>Abhishek thakur</h3>
+                </div>
+                <div className="Chat_message_display">
+                    <Sender></Sender>
+                    <Receiver></Receiver>
+                </div>
+                <div className="Chat_message_footer">
+                    <form class="ui form Chat_message_footer_form">
+                        <input className='Chat_message_footer_form_input' placeholder="Enter message..." />
+                        <button class="ui button Chat_message_footer_form_button" type="submit">Send</button>
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }

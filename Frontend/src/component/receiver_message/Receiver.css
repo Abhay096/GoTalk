@@ -1,0 +1,15 @@
+.receiver {
+    padding: 1em;
+    display: flex;
+    justify-content: start
+}
+
+.receiver_message {
+    max-width: 30em;
+    height: auto;
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+    background-color: #9393f3;
+    border-radius: 1em;
+}
