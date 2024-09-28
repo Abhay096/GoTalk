@@ -13,6 +13,10 @@ function Chat() {
     const [connectionArray, setConnectionArray] = useState([]);
     // checking if multifuncmodel is open or closed
     const [modalOpen, setModalOpen] = useState(false);
+    // state for length of the array
+    const [length, setLength] = useState(0);
+    const [selectedContact, setSelectedContact] = useState(null);
+
 
     //function to fetch profiles data and connection array
     const loadData = async () => {
@@ -32,6 +36,7 @@ function Chat() {
                 withCredentials: true
             });
             setConnectionArray(response.data.connections.connection);
+            setLength(response.data.connections.connection.length);
         } catch (error) {
             console.log("Error while fetching connections", error);
         }
@@ -61,7 +66,8 @@ function Chat() {
                 </div>
                 <div className='Chat_contact_contact'>
                     {connectionArray.map((connection, index) => (
-                        <Contact id={index} key={index} name={connection.value} phone={connection.key} />
+                        <Contact length={length} id={index} key={index} name={connection.value} phone={connection.key} setSelectedContact={setSelectedContact}
+                            selectedContact={selectedContact} />
                     ))}
 
                 </div>

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './Contact.css';
 import axios from 'axios';
 
-function Contact({ name, phone, id }) {       //getting name and phone number as a prop
+function Contact({ name, phone, id, length, setSelectedContact, selectedContact }) {       //getting name and phone number as a prop
 
     // state to store user profile image
     const [avatar, setAvatar] = useState('');
+    // state to change style of contact when clicked
+    const [selectedId, setSelectedId] = useState(null);
 
     // hook which run when it render first time
     useEffect(() => {
@@ -20,8 +22,10 @@ function Contact({ name, phone, id }) {       //getting name and phone number as
         // calling the function
         friendprofile();
     }, []);
+
+
     return (
-        <div className='Contact_main_div' id={id}>
+        <div className={`Contact_main_div ${id === selectedContact ? 'selected' : ''}`} id={id} onClick={() => { setSelectedContact(id) }}>
             <div className='Contact_image_div'>
                 <img src={avatar} className="ui avatar image Contact_image" />
             </div>
