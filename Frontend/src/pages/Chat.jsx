@@ -1,13 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Chat.css';
 import Contact from '../component/contact/Contact';
 import ModalExampleCloseIcon from '../component/modal/ModalExampleCloseIcon';
 import axios from 'axios';
 import Popover from '../component/popover/Popover';
 import MultiFuncModal from '../component/modal/MultiFuncModal';
-import defimg from '../assets/defimg.jpg';
 import Sender from '../component/sender_message/Sender';
 import Receiver from '../component/receiver_message/Receiver';
+
+
+import io, { Socket } from 'socket.io-client';
+const socket = io.connect("http://localhost:3000", {
+    withCredentials: true
+})
+socket.on("connect", () => {
+    console.log("Connected to the server, socket ID:", socket.id);  // This will print the socket ID on the client side
+});
+
+socket.on("connect_error", (err) => {
+    console.log("Connection error:", err);  // If there's any connection error, it will print the error details
+});
+
+
+
+
+
+
 
 function Chat() {
     //state to store user profile image
@@ -20,8 +38,51 @@ function Chat() {
     const [length, setLength] = useState(0);
     // state to change the style of contact tab to know user is chatting with whom
     const [selectedContact, setSelectedContact] = useState(null);
+    // state to change name of friend on chat window when friend tab is selected
+    const [friendName, setFriendName] = useState('');
+    // state to change the image of friend on chat window when friend tab is selected
+    const [friendImage, setFriendImage] = useState('');
+    // state to store friend phone number
+    const [friendPhoneNumber, setFriendPhoneNumber] = useState('');
+    // state to get socket ID of friend
+    const [friendSocketId, setFriendSocketId] = useState('');
+    // state to handle message input
+    const [messageInput, setMessageInput] = useState({ message: "" });
+    //state to clear input field
+    const [clearInput, setClearInput] = useState('');
+    // state to store current messages
+    const [message, setMessage] = useState('');
+    // state to store received messages from friend
+    const [receivedMessage, setReceivedMessage] = useState('');
+    // state to store array of prev messages from db
+    const [prevMessageArray, setPrevMessageArray] = useState([]);
+    // state tto store user phone number
+    const [userPhoneNumber, setUserPhoneNumber] = useState('');
+    // Create a ref for the message display for scrollbar of the Chat_message_display div always scrolls to the bottom when a new message arrives
+    const messageDisplayRef = useRef(null);
 
 
+    useEffect(() => {
+        // Listen for incoming messages
+        socket.on('receive', (data) => {
+            console.log(data.message);
+            setReceivedMessage(data.message);
+            setPrevMessageArray(prevMessages => [
+                ...prevMessages,
+                {
+                    senderUserID: friendPhoneNumber, // Set the correct sender ID for the received message
+                    receiverUserID: userPhoneNumber,  // This could be the current user's phone number
+                    message: data.message,
+                    createdAt: new Date() // Optionally add a timestamp
+                }
+            ]);
+            setTimeout(scrollToBottom, 100);
+            console.log("received message from friend: ", receivedMessage);
+        });
+
+        // Cleanup the listener on component unmount
+        return () => socket.off('receive');
+    }, []);
 
     //function to fetch profiles data and connection array
     const loadData = async () => {
@@ -57,6 +118,33 @@ function Chat() {
         if (modalOpen)
             loadData();
     }, [modalOpen]);
+
+
+    const onChange = (e) => {
+        setClearInput(e.target.value);
+        setMessageInput({ ...messageInput, [e.target.name]: e.target.value })
+        setMessage(e.target.value)
+    }
+    const handleSend = (e) => {
+        e.preventDefault();
+        socket.emit('send', { friendSocketId: friendSocketId, friendPhoneNumber: friendPhoneNumber, message: message })
+        setPrevMessageArray(prevMessages => [...prevMessages, {
+            senderUserID: userPhoneNumber,
+            receiverUserID: friendPhoneNumber,
+            message: message,
+            createdAt: new Date()  // add a timestamp for display
+        }]);
+
+        setClearInput('');
+        setTimeout(scrollToBottom, 100);
+    }
+
+    const scrollToBottom = () => {
+        if (messageDisplayRef.current) {
+            messageDisplayRef.current.scrollTop = messageDisplayRef.current.scrollHeight;
+        }
+    }
+
     return (
         <div className='Chat_main_div'>
             <div className='Chat_contact'>
@@ -71,8 +159,7 @@ function Chat() {
                 </div>
                 <div className='Chat_contact_contact'>
                     {connectionArray.map((connection, index) => (
-                        <Contact length={length} id={index} key={index} name={connection.value} phone={connection.key} setSelectedContact={setSelectedContact}
-                            selectedContact={selectedContact} />
+                        <Contact length={length} id={index} key={index} name={connection.value} phone={connection.key} setSelectedContact={setSelectedContact} selectedContact={selectedContact} setFriendName={setFriendName} setFriendImage={setFriendImage} setFriendSocketId={setFriendSocketId} setFriendPhoneNumber={setFriendPhoneNumber} setPrevMessageArray={setPrevMessageArray} setUserPhoneNumber={setUserPhoneNumber} scrollToBottom={scrollToBottom} />
                     ))}
 
                 </div>
@@ -92,16 +179,19 @@ function Chat() {
 
             <div className='Chat_message'>
                 <div className="Chat_message_profile_header">
-                    <img src={defimg} className="ui mini avatar image Chat_message_profile_header_image" />
-                    <h3 className='Chat_message_profile_header_name'>Abhishek thakur</h3>
+                    <img src={friendImage} className="ui mini avatar image Chat_message_profile_header_image" />
+                    <h3 className='Chat_message_profile_header_name'>{friendName}</h3>
                 </div>
-                <div className="Chat_message_display">
-                    <Sender></Sender>
-                    <Receiver></Receiver>
+                <div className="Chat_message_display" ref={messageDisplayRef}>
+                    {prevMessageArray.map((messageObj) => (
+                        messageObj.senderUserID === userPhoneNumber ?
+                            <Sender message={messageObj.message} /> :
+                            <Receiver message={messageObj.message} />
+                    ))}
                 </div>
                 <div className="Chat_message_footer">
-                    <form class="ui form Chat_message_footer_form">
-                        <input className='Chat_message_footer_form_input' placeholder="Enter message..." />
+                    <form onSubmit={handleSend} class="ui form Chat_message_footer_form">
+                        <input value={clearInput} onChange={onChange} name='messageInput' className='Chat_message_footer_form_input' placeholder="Enter message..." />
                         <button class="ui button Chat_message_footer_form_button" type="submit">Send</button>
                     </form>
                 </div>

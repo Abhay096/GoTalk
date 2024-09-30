@@ -1,12 +1,12 @@
 import React from 'react';
 import './Sender.css'
 
-function Sender() {
+function Sender({ message }) {
     return (
         <>
             <div className="sender">
                 <div className="sender_message">
-                    this is the sender message Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque ex sunt provident magnam sit a iusto minus quidem commodi accusantium!
+                    {message}
                 </div>
             </div>
         </>
