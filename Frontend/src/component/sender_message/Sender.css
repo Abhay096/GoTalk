@@ -7,10 +7,11 @@
 
 .sender_message {
     max-width: 30em;
+    min-width: 5em;
     height: auto;
     padding: 0.5em;
     display: flex;
     align-items: center;
     background-color: #d5d5fe;
-    border-radius: 1em;
+    border-radius: 0.5em;
 }

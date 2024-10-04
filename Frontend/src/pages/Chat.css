@@ -58,7 +58,14 @@
     padding: 0.8em;
 }
 
-
+.Chat_contact_before_connection {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: 600;
+}
 
 
 .Chat_message_profile_header {
@@ -105,3 +112,89 @@
     background-color: #7979f0 !important;
     color: white !important;
 }
+
+.Chat_message_befor_selecting_contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    flex-direction: column;
+}
+
+.Chat_message_befor_selecting_contact_img {
+    width: 10em;
+    height: 10em;
+}
+
+.Chat_message_back_button {
+    margin-right: 1em !important;
+    cursor: pointer;
+    display: none;
+}
+
+.Chat_contact.hide {
+    display: none;
+}
+
+.Chat_message.hide {
+    display: none;
+}
+
+.Chat_message_back_button {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    .Chat_contact {
+        width: 100%;
+        display: flex;
+    }
+
+    .Chat_message_befor_selecting_contact {
+        display: none;
+    }
+
+    .Chat_message {
+        display: none;
+    }
+
+    .Chat_message_back_button {
+        display: block;
+    }
+}
+
+/* .Chat_contact_mobile_style1 {
+    display: none;
+}
+
+.Chat_contact_mobile_style2 {
+    display: flex;
+    width: 100%;
+}
+
+.Chat_message_mobile_style1 {
+    display: block;
+    width: 100%;
+}
+
+.Chat_message_mobile_style2 {
+    display: none;
+} */
+
+/* @media (max-width: 1023px) {
+    .Chat_contact {
+        width: 100%;
+    }
+
+    .Chat_message {
+        display: none;
+    }
+
+    .Chat_message_befor_selecting_contact {
+        display: none;
+    }
+
+    .Chat_message_back_button {
+        display: block;
+    }
+} */

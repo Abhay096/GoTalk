@@ -18,7 +18,8 @@ import profileFetchRouter from './Routes/profile_fetch.js';
 import connectionFetchRouter from './Routes/connectionFetch.js'
 import sockedIDRouter from './Routes/friendSocketID.js'
 import { messageData } from './Models/message.js';
-import chatFetchRouter from './Routes/chatFetch.js'
+import chatFetchRouter from './Routes/chatFetch.js';
+import latestMessageFetchRouter from './Routes/latestMessageFetch.js';
 
 
 //configuring env file
@@ -98,7 +99,8 @@ app.use('/api', profileRouter)  //using profile creation route
 app.use('/api', profileFetchRouter)  //using profile data fetch route
 app.use('/api', connectionFetchRouter)  //using profile data fetch route
 app.use('/api', sockedIDRouter)  //route use to fetch socket id of friend
-app.use('/api', chatFetchRouter)  //route use to fetch messages in db
+app.use('/api', chatFetchRouter)  //route use to fetch messages from db
+app.use('/api', latestMessageFetchRouter)  //route use to fetch latest messages from db
 
 // creating default route
 app.get('/', (req, res) => {

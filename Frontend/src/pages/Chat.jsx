@@ -7,6 +7,9 @@ import Popover from '../component/popover/Popover';
 import MultiFuncModal from '../component/modal/MultiFuncModal';
 import Sender from '../component/sender_message/Sender';
 import Receiver from '../component/receiver_message/Receiver';
+import logo from '../assets/logo.png';
+import moment from 'moment';
+
 
 
 import io, { Socket } from 'socket.io-client';
@@ -60,7 +63,31 @@ function Chat() {
     const [userPhoneNumber, setUserPhoneNumber] = useState('');
     // Create a ref for the message display for scrollbar of the Chat_message_display div always scrolls to the bottom when a new message arrives
     const messageDisplayRef = useRef(null);
+    // state to change style according connection length of user if 0 then this if >0 then this
+    const [contactListCss, setContactListCss] = useState(true);
+    // state to change style of chat window when user is chatting with someone
+    const [chatWindowCss, setChatWindowCss] = useState(true);
+    // state to handle mobile view
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 1023) {
+                setIsChatOpen(false); // Ensure both sections are shown on larger screens
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const handleContactClick = () => {
+        setIsChatOpen(true);
+    };
+
+    const handleBackClick = () => {
+        setIsChatOpen(false);
+    };
 
     useEffect(() => {
         // Listen for incoming messages
@@ -78,6 +105,7 @@ function Chat() {
             ]);
             setTimeout(scrollToBottom, 100);
             console.log("received message from friend: ", receivedMessage);
+            console.log(prevMessageArray);
         });
 
         // Cleanup the listener on component unmount
@@ -101,8 +129,29 @@ function Chat() {
             const response = await axios.get('http://localhost:3000/api/connectionFetch', {
                 withCredentials: true
             });
-            setConnectionArray(response.data.connections.connection);
+            // console.log(response.data.connections.connection);
+
+            const token = await axios.get('http://localhost:3000/api/token_data', { withCredentials: true });
+            const userPhone = token.data.account.phone_no;
+            const connArr = response.data.connections.connection
+            for (let i = 0; i < connArr.length; i++) {
+
+                const response = await axios.post('http://localhost:3000/api/latestMessageFetch', {
+                    userPhone: userPhone,
+                    friendPhone: connArr[i].key
+                });
+                if (response.data?.data?.message) {
+                    connArr[i].latest = response.data.data.message
+                    const formattedTime = moment(response.data.data.createdAt).format('LT');
+                    connArr[i].latestTime = formattedTime;
+                }
+            }
+            setConnectionArray(connArr);
             setLength(response.data.connections.connection.length);
+
+            if (response.data.connections.connection.length > 0) {
+                setContactListCss(false);
+            }
         } catch (error) {
             console.log("Error while fetching connections", error);
         }
@@ -125,8 +174,9 @@ function Chat() {
         setMessageInput({ ...messageInput, [e.target.name]: e.target.value })
         setMessage(e.target.value)
     }
-    const handleSend = (e) => {
+    const handleSend = async (e) => {
         e.preventDefault();
+
         socket.emit('send', { friendSocketId: friendSocketId, friendPhoneNumber: friendPhoneNumber, message: message })
         setPrevMessageArray(prevMessages => [...prevMessages, {
             senderUserID: userPhoneNumber,
@@ -134,7 +184,7 @@ function Chat() {
             message: message,
             createdAt: new Date()  // add a timestamp for display
         }]);
-
+        loadData()
         setClearInput('');
         setTimeout(scrollToBottom, 100);
     }
@@ -147,7 +197,7 @@ function Chat() {
 
     return (
         <div className='Chat_main_div'>
-            <div className='Chat_contact'>
+            <div className={`Chat_contact ${isChatOpen ? 'hide' : ''}`} style={{ display: isChatOpen && window.innerWidth <= 1023 ? 'none' : 'flex', width: window.innerWidth <= 1023 ? '100%' : '30%' }}>
                 <div className="Chat_contact_header">
                     <h2 class="ui header Chat_contact_header_chat">Chats</h2>
                     <ModalExampleCloseIcon trigger={<div>
@@ -157,12 +207,17 @@ function Chat() {
                 <div className="Chat_contact_search">
                     <input className='Chat_contact_search_input' type="search" name="" id="" placeholder='Search...' />
                 </div>
-                <div className='Chat_contact_contact'>
-                    {connectionArray.map((connection, index) => (
-                        <Contact length={length} id={index} key={index} name={connection.value} phone={connection.key} setSelectedContact={setSelectedContact} selectedContact={selectedContact} setFriendName={setFriendName} setFriendImage={setFriendImage} setFriendSocketId={setFriendSocketId} setFriendPhoneNumber={setFriendPhoneNumber} setPrevMessageArray={setPrevMessageArray} setUserPhoneNumber={setUserPhoneNumber} scrollToBottom={scrollToBottom} />
-                    ))}
+                {contactListCss ? (<div className='Chat_contact_before_connection'>
+                    Add some friend to start Chatting
+                </div>) : (
+                    <div className='Chat_contact_contact'>
+                        {connectionArray.map((connection, index) => (
+                            <Contact length={length} id={index} key={index} name={connection.value} phone={connection.key} setSelectedContact={setSelectedContact} selectedContact={selectedContact} setFriendName={setFriendName} setFriendImage={setFriendImage} setFriendSocketId={setFriendSocketId} setFriendPhoneNumber={setFriendPhoneNumber} setPrevMessageArray={setPrevMessageArray} setUserPhoneNumber={setUserPhoneNumber} scrollToBottom={scrollToBottom} setChatWindowCss={setChatWindowCss}
+                                handleContactClick={handleContactClick} latest={connection.latest} latestTime={connection.latestTime} />
+                        ))}
 
-                </div>
+                    </div>
+                )}
                 <div className='Chat_contact_footer'>
                     <div className='Chat_contact_footer_avatar_div'>
                         <MultiFuncModal state={setModalOpen} type={'profile'} trigger={<div>
@@ -176,9 +231,14 @@ function Chat() {
             </div>
 
 
-
-            <div className='Chat_message'>
+            {chatWindowCss ? (<div className='Chat_message_befor_selecting_contact'>
+                <img className='Chat_message_befor_selecting_contact_img' src={logo} alt="" />
+                <h2>Start Chatting</h2>
+            </div>) : (<div className={`Chat_message ${isChatOpen ? '' : 'hide'}`} style={{ display: isChatOpen ? 'flex' : 'none', width: window.innerWidth <= 1023 ? '100%' : '70%' }}>
                 <div className="Chat_message_profile_header">
+                    <div className='Chat_message_back_button' onClick={handleBackClick}>
+                        <i aria-hidden="true" class="arrow left large fitted icon"></i>
+                    </div>
                     <img src={friendImage} className="ui mini avatar image Chat_message_profile_header_image" />
                     <h3 className='Chat_message_profile_header_name'>{friendName}</h3>
                 </div>
@@ -195,7 +255,8 @@ function Chat() {
                         <button class="ui button Chat_message_footer_form_button" type="submit">Send</button>
                     </form>
                 </div>
-            </div>
+            </div>)}
+
         </div>
     )
 }
