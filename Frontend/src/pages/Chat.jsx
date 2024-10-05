@@ -14,7 +14,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 
 import io, { Socket } from 'socket.io-client';
-const socket = io.connect("https://gotalk-backend.onrender.com", {
+const socket = io.connect("http://localhost:3000", {
     withCredentials: true
 })
 socket.on("connect", () => {
