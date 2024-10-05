@@ -73,14 +73,14 @@ function ModalExampleCloseIcon({ onClose, trigger }) { //function passed as a pr
 
             // try block to retrive data in token
             try {
-                const response = await axios.get('http://localhost:3000/api/token_data', {
+                const response = await axios.get('https://gotalk-backend.onrender.com/api/token_data', {
                     withCredentials: true // This allows cookies to be sent with the request
                 });
                 const userPhone = response.data.account.phone_no;
 
                 // try block to connection user with his/her friend
                 try {
-                    const user = await axios.patch('http://localhost:3000/api/connectionRequest', {
+                    const user = await axios.patch('https://gotalk-backend.onrender.com/api/connectionRequest', {
                         name: cred.name,
                         friendPhone: cred.friendPhone,
                         userPhone: userPhone

@@ -13,7 +13,7 @@ function Contact({ name, phone, id, length, setSelectedContact, selectedContact,
 
         // function to get user profile image
         const friendprofile = async () => {
-            const profile = await axios.post('http://localhost:3000/api/profile_fetch', {
+            const profile = await axios.post('https://gotalk-backend.onrender.com/api/profile_fetch', {
                 phone: phone
             }, { withCredentials: true });
             setAvatar(profile.data.userProfile.avatar);
@@ -26,7 +26,7 @@ function Contact({ name, phone, id, length, setSelectedContact, selectedContact,
     const switchingFriend = async () => {
         setFriendName(name ? name : phone);
         setFriendImage(avatar);
-        const friendSocketID = await axios.post('http://localhost:3000/api/friendSocketId', {
+        const friendSocketID = await axios.post('https://gotalk-backend.onrender.com/api/friendSocketId', {
             phone: phone
         })
         setFriendSocketId(friendSocketID.data.friendSocketId);
@@ -38,10 +38,10 @@ function Contact({ name, phone, id, length, setSelectedContact, selectedContact,
     const loadMessages = async () => {
         try {
             setPrevMessageArray([]);
-            const response = await axios.get('http://localhost:3000/api/token_data', { withCredentials: true });
+            const response = await axios.get('https://gotalk-backend.onrender.com/api/token_data', { withCredentials: true });
             const userPhone = response.data.account.phone_no;
             const friendPhone = phone;
-            const messages = await axios.post('http://localhost:3000/api/chatFetch', {
+            const messages = await axios.post('https://gotalk-backend.onrender.com/api/chatFetch', {
                 userPhone: userPhone,
                 friendPhone: friendPhone
             });
