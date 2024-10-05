@@ -58,7 +58,7 @@ function Login({ setIsAuthenticated }) {
 
         //  api call for login
         try {
-            const response = await axios.post(`http://localhost:3000/api/login`, {
+            const response = await axios.post(`https://gotalk-backend.onrender.com/api/login`, {
                 password: cred.password,
                 phone_no: cred.phone_no
             }, {
