@@ -97,7 +97,6 @@ function Chat() {
     useEffect(() => {
         // Listen for incoming messages
         socket.on('receive', (data) => {
-            console.log(data.message);
             setReceivedMessage(data.message);
             setPrevMessageArray(prevMessages => [
                 ...prevMessages,
@@ -109,8 +108,6 @@ function Chat() {
                 }
             ]);
             setTimeout(scrollToBottom, 100);
-            console.log("received message from friend: ", receivedMessage);
-            console.log(prevMessageArray);
         });
 
         // Cleanup the listener on component unmount
@@ -120,7 +117,7 @@ function Chat() {
     //function to fetch profiles data and connection array
     const loadData = async () => {
         try {
-            const profile = await axios.post('https://gotalk-backend.onrender.com/api/profile_fetch', {}, { withCredentials: true });
+            const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
             const user_Profile = profile.data.userProfile;
             //setting the message for modal
             setUserProfileImage(user_Profile.avatar);
@@ -131,17 +128,16 @@ function Chat() {
         }
 
         try {
-            const response = await axios.get('https://gotalk-backend.onrender.com/api/connectionFetch', {
+            const response = await axios.get('http://localhost:3000/api/connectionFetch', {
                 withCredentials: true
             });
-            // console.log(response.data.connections.connection);
 
-            const token = await axios.get('https://gotalk-backend.onrender.com/api/token_data', { withCredentials: true });
+            const token = await axios.get('http://localhost:3000/api/token_data', { withCredentials: true });
             const userPhone = token.data.account.phone_no;
             const connArr = response.data.connections.connection
             for (let i = 0; i < connArr.length; i++) {
 
-                const response = await axios.post('https://gotalk-backend.onrender.com/api/latestMessageFetch', {
+                const response = await axios.post('http://localhost:3000/api/latestMessageFetch', {
                     userPhone: userPhone,
                     friendPhone: connArr[i].key
                 });
@@ -201,7 +197,7 @@ function Chat() {
     }
 
     const handleLogout = async () => {
-        const response = await axios.post('https://gotalk-backend.onrender.com/api/logout', { withCredentials: true })
+        const response = await axios.post('http://localhost:3000/api/logout', { withCredentials: true })
         setResponseMessage(response.data.message)
         localStorage.removeItem('isAuthenticated');
         setModalOpen1(true)

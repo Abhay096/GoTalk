@@ -76,7 +76,7 @@ function Profile({ setIsProfileCompleted }) {
 
         //  api call for profile data submission
         try {
-            const response = await axios.post('https://gotalk-backend.onrender.com/api/profile', {
+            const response = await axios.post('http://localhost:3000/api/profile', {
                 avatar: image,
                 bio: bio
             }, { withCredentials: true });// This allows cookies to be sent with the request

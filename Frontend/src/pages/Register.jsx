@@ -92,7 +92,7 @@ function Register() {
 
         // calling api for registration
         try {
-            const response = await axios.post(`https://gotalk-backend.onrender.com/api/register`, {
+            const response = await axios.post(`http://localhost:3000/api/register`, {
                 name: cred.name,
                 email: cred.email,
                 password: cred.password,

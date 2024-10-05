@@ -18,7 +18,7 @@ function MultiFuncModal({ trigger, type, state, body, opening, page, status, set
     // function to load profile data
     const loadProfile = async () => {
         try {
-            const profile = await axios.post('https://gotalk-backend.onrender.com/api/profile_fetch', {}, { withCredentials: true });
+            const profile = await axios.post('http://localhost:3000/api/profile_fetch', {}, { withCredentials: true });
             const user_Profile = profile.data.userProfile;
             setImage(user_Profile.avatar);
             setBio(user_Profile.about)
@@ -68,12 +68,12 @@ function MultiFuncModal({ trigger, type, state, body, opening, page, status, set
     };
 
     const handleProfileUpdate = async () => {
-        const response = await axios.post('https://gotalk-backend.onrender.com/api/profile', {
+        const response = await axios.post('http://localhost:3000/api/profile', {
             avatar: image,
             bio: bio
         }, { withCredentials: true });
         state(true)
-        console.log(response.data.message);
+
     }
 
     // function to prevent default nature of form

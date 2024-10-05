@@ -16,7 +16,7 @@ const MainApp = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get('https://gotalk-backend.onrender.com/api/auth', { withCredentials: true }); // Make a request to your backend
+        const response = await axios.get('http://localhost:3000/api/auth', { withCredentials: true }); // Make a request to your backend
         const isAuthenticated = response.data.authenticated;
         // if (response.data.authenticated) {
         //   setIsAuthenticated(true); // User is authenticated
