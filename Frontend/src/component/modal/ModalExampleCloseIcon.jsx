@@ -62,7 +62,7 @@ function ModalExampleCloseIcon({ onClose, trigger }) { //function passed as a pr
         // try block for checking phone number really exist
         try {
             //  calling the function to check if the phone number exist
-            const response = await axios(`http://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.friendPhone)}&country_code=IN`);
+            const response = await axios(`https://apilayer.net/api/validate?access_key=ddf70180115d1103a1491ad99d8cf5ea&number=${Number(cred.friendPhone)}&country_code=IN`);
             if (response.data.valid === false) {
                 //setting the message for modal
                 setResponseMessage("Phone number doesn't exist")
