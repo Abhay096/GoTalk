@@ -67,6 +67,9 @@
     font-weight: 600;
 }
 
+.Chat_message {
+    background-color: #f6f6ff;
+}
 
 .Chat_message_profile_header {
     display: flex;
@@ -119,6 +122,7 @@
     align-items: center;
     width: 70%;
     flex-direction: column;
+    background-color: #f6f6ff;
 }
 
 .Chat_message_befor_selecting_contact_img {

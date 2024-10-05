@@ -9,6 +9,7 @@ import Sender from '../component/sender_message/Sender';
 import Receiver from '../component/receiver_message/Receiver';
 import logo from '../assets/logo.png';
 import moment from 'moment';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 
@@ -69,6 +70,10 @@ function Chat() {
     const [chatWindowCss, setChatWindowCss] = useState(true);
     // state to handle mobile view
     const [isChatOpen, setIsChatOpen] = useState(false);
+    //state to store response message
+    const [responseMessage, setResponseMessage] = useState("");
+    const [modalOpen1, setModalOpen1] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleResize = () => {
@@ -195,8 +200,17 @@ function Chat() {
         }
     }
 
+    const handleLogout = async () => {
+        const response = await axios.post('http://localhost:3000/api/logout', { withCredentials: true })
+        setResponseMessage(response.data.message)
+        localStorage.removeItem('isAuthenticated');
+        setModalOpen1(true)
+
+    }
+
     return (
         <div className='Chat_main_div'>
+            <MultiFuncModal page={'chat'} state={setModalOpen1} opening={modalOpen1} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <div className={`Chat_contact ${isChatOpen ? 'hide' : ''}`} style={{ display: isChatOpen && window.innerWidth <= 1023 ? 'none' : 'flex', width: window.innerWidth <= 1023 ? '100%' : '30%' }}>
                 <div className="Chat_contact_header">
                     <h2 class="ui header Chat_contact_header_chat">Chats</h2>
@@ -225,7 +239,7 @@ function Chat() {
                         </div>} />
                     </div>
                     <div>
-                        <Popover trigger={<i style={{ cursor: 'pointer' }} aria-hidden="true" class="setting large fitted icon"></i>} content="Settings"></Popover>
+                        <Popover trigger={<img onClick={handleLogout} style={{ cursor: 'pointer' }} width="25" height="25" src="https://img.icons8.com/fluency-systems-filled/48/logout-rounded-left.png" alt="logout-rounded-left" />} content="Log Out"></Popover>
                     </div>
                 </div>
             </div>

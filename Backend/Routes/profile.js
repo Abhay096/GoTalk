@@ -22,7 +22,7 @@ router.post('/profile', async (req, res) => {
     //if don't get the token
     if (!token) {
         console.log("Not get the token!!!")
-        return res.status(401).json({ message: 'No token provided' });
+        return res.status(401).json({ message: 'No token provided', status: 401 });
     }
 
     // block to verify token
@@ -31,7 +31,7 @@ router.post('/profile', async (req, res) => {
         phone = decoded.phone;
     } catch (error) {
         console.log("Error in Profile while getting token");
-        return res.status(401).json({ message: 'Error in Profile while getting token' });
+        return res.status(401).json({ message: 'Error in Profile while getting token', status: 401 });
     }
 
     // block to upload image to cloudinary and storing data in profile
@@ -51,7 +51,7 @@ router.post('/profile', async (req, res) => {
         const userExist = await profile.findOne({ phone_no: phone });
         if (userExist) {
             await profile.updateOne({ phone_no: phone }, { $set: { avatar: uploadResult.secure_url, about: bio } });
-            return res.status(200).json({ message: 'Profile update successfully' });
+            return res.status(200).json({ message: 'Profile update successfully', status: 200 });
         }
 
         //creating the profile and uploading data in database if user is not pre-exist
@@ -61,13 +61,13 @@ router.post('/profile', async (req, res) => {
             about: bio
         });
         // returning the response
-        return res.status(200).json({ message: 'Profile created successfully' });
+        return res.status(200).json({ message: 'Profile created successfully', status: 200 });
 
     } catch (error) {
         // consoling the error
         console.log("Profile Error:", error);
         //returning the error
-        return res.status(500).json({ message: 'Error creating profile' });
+        return res.status(500).json({ message: 'Error creating profile', status: 500 });
     }
 });
 

@@ -20,6 +20,8 @@ import sockedIDRouter from './Routes/friendSocketID.js'
 import { messageData } from './Models/message.js';
 import chatFetchRouter from './Routes/chatFetch.js';
 import latestMessageFetchRouter from './Routes/latestMessageFetch.js';
+import auth from './Routes/auth.js';
+import logoutRouter from './Routes/logout.js'
 
 
 //configuring env file
@@ -101,6 +103,8 @@ app.use('/api', connectionFetchRouter)  //using profile data fetch route
 app.use('/api', sockedIDRouter)  //route use to fetch socket id of friend
 app.use('/api', chatFetchRouter)  //route use to fetch messages from db
 app.use('/api', latestMessageFetchRouter)  //route use to fetch latest messages from db
+app.use('/api', auth)  //route use to check user is new or old
+app.use('/api', logoutRouter)  //route use to logout
 
 // creating default route
 app.get('/', (req, res) => {

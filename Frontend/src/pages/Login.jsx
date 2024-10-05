@@ -5,8 +5,9 @@ import axios from 'axios';
 import validator from 'validator';
 import Loader from '../component/loader/Loader';
 import MultiFuncModal from '../component/modal/MultiFuncModal';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ setIsAuthenticated }) {
     // State for loader
     const [displayLoader, setDisplayLoader] = useState(false);
     // State for phone number validation error
@@ -15,6 +16,8 @@ function Login() {
     const [responseMessage, setResponseMessage] = useState("");
     //  State for modal open and close
     const [modalOpen, setModalOpen] = useState(false);
+    const [status, setStatus] = useState(null);
+    const navigate = useNavigate();
 
 
     //funtion for phone validation
@@ -63,8 +66,10 @@ function Login() {
             });
             // setting response message
             setResponseMessage(response.data.message)
+            setStatus(response.data.status);
             // opeing the modal
             setModalOpen(true);
+            localStorage.setItem('isAuthenticated', 'true');
         } catch (error) {
             console.log('Error while login', error);
         }
@@ -73,12 +78,15 @@ function Login() {
             setDisplayLoader(false);
         }
     }
+    const handleSignUp = () => {
+        navigate('/register')
+    }
     return (
-        <>
+        <div style={{ backgroundColor: '#f6f6ff', minHeight: '100vh' }}>
             <div className={`login_loader ${displayLoader ? 'login_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
-            <MultiFuncModal state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
+            <MultiFuncModal setIsAuthenticated={setIsAuthenticated} page={'login'} status={status} state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <div className="login_header">
                 <div class="ui huge header login_logo">
                     <div>
@@ -107,10 +115,10 @@ function Login() {
             </div>
             <div className="login_footer">
                 <div class="ui huge header" style={{ "width": "100%" }}>
-                    <h5 class='ui header'>Don't have an account? <span className='login_footer_span'>Sign up</span></h5>
+                    <h5 class='ui header'>Don't have an account? <span className='login_footer_span' onClick={handleSignUp}>Sign up</span></h5>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

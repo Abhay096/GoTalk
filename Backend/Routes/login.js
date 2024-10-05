@@ -12,13 +12,15 @@ router.post('/login', async (req, res) => {
     const userPhoneNo = req.body.phone_no;
     const userPassword = req.body.password;
 
+    console.log(userPhoneNo, userPassword);
+
     try {
         //finding user by phone number
         const userData = await user.findOne({ phone_no: userPhoneNo });
 
         //if user not found
         if (!userData) {
-            return res.json({ message: "Account not found", status: 0 });
+            return res.json({ message: "Account not found", status: 500 });
         }
 
         //comparing password with hashed password
@@ -26,7 +28,7 @@ router.post('/login', async (req, res) => {
 
         //if password not match
         if (!passwordMatch) {
-            return res.json({ message: "Wrong password", status: 0 });
+            return res.json({ message: "Wrong password", status: 500 });
         }
         // if password match
         else {
@@ -46,7 +48,7 @@ router.post('/login', async (req, res) => {
         //logging error
         console.log("Internal server Error while login:", error);
         //returning error
-        return res.status(500).json({ message: "Internal server error", status: 0 });
+        return res.status(500).json({ message: "Internal server error", status: 500 });
 
     }
 });

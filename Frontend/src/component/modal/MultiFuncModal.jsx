@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './MultiFuncModal.css';
 import { ModalContent, ModalActions, Button, Header, Icon, Modal, } from 'semantic-ui-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function MultiFuncModal({ trigger, type, state, body, opening }) {
-
+function MultiFuncModal({ trigger, type, state, body, opening, page, status, setIsAuthenticated }) {
+    const navigate = useNavigate();
     // state for modal open or close
     const [open, setOpen] = React.useState(false)
     // state for image file
@@ -85,6 +86,22 @@ function MultiFuncModal({ trigger, type, state, body, opening }) {
         setBio(e.target.value);
     }
 
+    const handleMessageSubmit = () => {
+        if (page === 'register' && status === 200) {
+            navigate('/login');
+        }
+        else if (page === 'login' && status === 200) {
+            setIsAuthenticated(true)
+            navigate('/profile')
+        }
+        else if (page === 'profile' && status === 200) {
+            navigate('/')
+        }
+        else if (page === 'chat') {
+            navigate('/login');
+        }
+    }
+
     // if modal type is profile then render this modal 
     if (type === 'profile') {
         return (
@@ -119,7 +136,6 @@ function MultiFuncModal({ trigger, type, state, body, opening }) {
         )
     }
 
-
     // if modal type is message then render this modal
     if (type === 'message') {
         return (
@@ -136,7 +152,7 @@ function MultiFuncModal({ trigger, type, state, body, opening }) {
                     <h3>{body}</h3>
                 </ModalContent>
                 <ModalActions>
-                    <Button color='green' onClick={() => state(false)}>
+                    <Button color='green' onClick={() => { state(false); handleMessageSubmit() }}>
                         <Icon name='checkmark' /> Yes
                     </Button>
                 </ModalActions>

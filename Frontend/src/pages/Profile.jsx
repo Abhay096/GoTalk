@@ -5,7 +5,7 @@ import axios from 'axios';
 import Loader from '../component/loader/Loader';
 import MultiFuncModal from '../component/modal/MultiFuncModal';
 
-function Profile() {
+function Profile({ setIsProfileCompleted }) {
 
     // State for loader
     const [displayLoader, setDisplayLoader] = useState(false);
@@ -17,6 +17,7 @@ function Profile() {
     const [responseMessage, setResponseMessage] = useState("");
     //  State for modal open and close
     const [modalOpen, setModalOpen] = useState(false);
+    const [status, setStatus] = useState(null)
 
     // ********************handle upload, drag and drop functionality********************
     const [image, setImage] = useState('https://react.semantic-ui.com/images/wireframe/square-image.png');
@@ -81,8 +82,11 @@ function Profile() {
             }, { withCredentials: true });// This allows cookies to be sent with the request
             //setting the response for modal
             setResponseMessage(response.data.message)
+            setStatus(response.data.status);
             //opening the modal
             setModalOpen(true);
+            setIsProfileCompleted(true);
+            localStorage.setItem('isProfileCompleted', 'true')
         } catch (error) {
             console.log("Error while creating profile:", error);
         }
@@ -93,11 +97,11 @@ function Profile() {
     }
 
     return (
-        <>
+        <div style={{ backgroundColor: '#f6f6ff', minHeight: '100vh' }}>
             <div className={`profile_loader ${displayLoader ? 'profile_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
-            <MultiFuncModal state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
+            <MultiFuncModal page={'profile'} status={status} state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <div className="login_header">
                 <div class="ui huge header login_logo">
                     <div>
@@ -124,7 +128,7 @@ function Profile() {
                     </form>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

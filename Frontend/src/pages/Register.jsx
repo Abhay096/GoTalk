@@ -5,8 +5,11 @@ import axios from 'axios';
 import validator from 'validator';
 import Loader from '../component/loader/Loader';
 import MultiFuncModal from '../component/modal/MultiFuncModal';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
+    const navigate = useNavigate();
+
     // state for loader
     const [displayLoader, setDisplayLoader] = useState(false)
 
@@ -21,6 +24,7 @@ function Register() {
     const [responseMessage, setResponseMessage] = useState("");
     //  State for modal open and close
     const [modalOpen, setModalOpen] = useState(false);
+    const [status, setStatus] = useState(null);
 
     //funtion to validate email
     const checkEmail = (email) => {
@@ -96,8 +100,10 @@ function Register() {
             });
             //Setting the response message for modal
             setResponseMessage(response.data.message)
+            setStatus(response.data.status)
             //opening the modal
             setModalOpen(true);
+
         } catch (error) {
             // consoling the error
             console.log('Error while registering', error);
@@ -105,14 +111,19 @@ function Register() {
         finally {
             // removing loader after processing
             setDisplayLoader(false);
+
         }
     }
+
+    const login = () => {
+        navigate('/login')
+    }
     return (
-        <>
+        <div style={{ backgroundColor: '#f6f6ff', minHeight: '100vh' }}>
             <div className={`register_loader ${displayLoader ? 'register_loader1' : ''}`}>
                 <Loader></Loader>
             </div>
-            <MultiFuncModal state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
+            <MultiFuncModal status={status} page={'register'} state={setModalOpen} opening={modalOpen} body={responseMessage} type='message' trigger={<div />}></MultiFuncModal>
             <div className="Register_header">
                 <div class="ui huge header Register_logo">
                     <div>
@@ -156,10 +167,10 @@ function Register() {
             </div>
             <div className="Register_footer">
                 <div class="ui huge header" style={{ "width": "100%" }}>
-                    <h5 class='ui header'>Already have a account? <span className='Register_footer_span'>Sign in</span></h5>
+                    <h5 class='ui header'>Already have a account? <span className='Register_footer_span' onClick={login}>Sign in</span></h5>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

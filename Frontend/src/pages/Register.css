@@ -64,6 +64,10 @@
     display: block;
 }
 
+.Register_footer_span {
+    cursor: pointer;
+}
+
 
 @media (min-width: 425px) and (max-width: 768px) {
     .Register_form {
