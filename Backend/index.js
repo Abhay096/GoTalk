@@ -89,8 +89,6 @@ io.on("connection", async (socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log("number while disconnecting----->", userPhone)
-        updateSocketId(userPhone)
         console.log("User disconnectd", socket.id);
     })
 })
