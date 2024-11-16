@@ -21,7 +21,7 @@ router.post('/logout', (req, res) => {
         updateSocketId(userPhone);
         console.log("socket id is now ''");
     } catch (error) {
-
+        console.log("error while loging out", error);
     }
 
     // Clear the token cookie by its name ('token' in this case)
