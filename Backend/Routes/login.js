@@ -12,8 +12,6 @@ router.post('/login', async (req, res) => {
     const userPhoneNo = req.body.phone_no;
     const userPassword = req.body.password;
 
-    console.log(userPhoneNo, userPassword);
-
     try {
         //finding user by phone number
         const userData = await user.findOne({ phone_no: userPhoneNo });

@@ -69,6 +69,7 @@ io.on("connection", async (socket) => {
             const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
             // the token contains the phone number  
             userPhone = decoded.phone;
+            console.log("number while making connection----->", userPhone)
             updateSocketId(userPhone, socket.id)
         }
     }
@@ -88,8 +89,9 @@ io.on("connection", async (socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log("User disconnectd", socket.id);
+        console.log("number while disconnecting----->", userPhone)
         updateSocketId(userPhone)
+        console.log("User disconnectd", socket.id);
     })
 })
 
