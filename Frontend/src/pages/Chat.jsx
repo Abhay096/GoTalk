@@ -197,7 +197,7 @@ function Chat() {
     }
 
     const handleLogout = async () => {
-        const response = await axios.post('https://gotalk-backend.onrender.com/api/logout', { withCredentials: true })
+        const response = await axios.post('https://gotalk-backend.onrender.com/api/logout', { userPhoneNumber: userPhoneNumber }, { withCredentials: true })
         setResponseMessage(response.data.message)
         localStorage.removeItem('isAuthenticated');
         setModalOpen1(true)
