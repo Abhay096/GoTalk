@@ -1,6 +1,5 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import { user } from '../Models/user.js';
 import { updateSocketId } from '../utils/updateSocketId.js';
 
 const router = express.Router();
@@ -10,6 +9,7 @@ router.post('/logout', (req, res) => {
 
     //if token not found
     if (!token) {
+        console.log("this is the token--->", token);
         console.log("Not get the token!!!")
         return res.status(401).json({ message: 'No token provided' });
     }

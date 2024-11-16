@@ -67,9 +67,8 @@ io.on("connection", async (socket) => {
         if (token) {
             // Verify the token
             const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
-            // the token contains the phone number  
+            // Assuming the token contains the phone number  
             userPhone = decoded.phone;
-            console.log("number while making connection----->", userPhone)
             updateSocketId(userPhone, socket.id)
         }
     }
