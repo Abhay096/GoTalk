@@ -9,10 +9,6 @@
     z-index: 5;
 }
 
-* {
-    font-family: Georgia, 'Times New Roman', Times, serif !;
-}
-
 .newtons-cradle {
     --uib-size: 50px;
     --uib-speed: 1.2s;

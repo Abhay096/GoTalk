@@ -12,10 +12,6 @@
     border-right: 2px solid #c5c1f6;
 }
 
-* {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-}
-
 .Chat_message {
     width: 70%;
     display: flex;
