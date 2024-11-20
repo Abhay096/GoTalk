@@ -6,6 +6,10 @@
     cursor: pointer;
 }
 
+* {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 .Contact_main_div:hover {
     background-color: #dedeff;
 }

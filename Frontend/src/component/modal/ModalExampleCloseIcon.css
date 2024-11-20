@@ -12,3 +12,7 @@
 .modal_loader1 {
     display: block;
 }
+
+* {
+    font-family: Georgia, 'Times New Roman', Times, serif !important;
+}

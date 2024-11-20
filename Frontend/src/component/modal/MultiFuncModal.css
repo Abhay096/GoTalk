@@ -5,6 +5,10 @@
     padding: 2em;
 }
 
+* {
+    font-family: Georgia, 'Times New Roman', Times, serif !important;
+}
+
 .MultiFuncModel_Profile_image_inner_div {
     display: inline-block;
     border-radius: 50%;

@@ -6,6 +6,10 @@
     background-color: #f6f6ff;
 }
 
+* {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 .Profile_image_outer_div {
     text-align: center;
 }

@@ -9,6 +9,10 @@
     width: 100%;
 }
 
+* {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 .login_header_content {
     font-size: 0.7em;
 }
